@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\common_full_open_on_phone.png",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable-hdpi-v4\\common_full_open_on_phone.png"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\googleg_standard_color_18.png",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable-hdpi-v4\\googleg_standard_color_18.png"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\common_google_signin_btn_icon_light_normal_background.9.png",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable-hdpi-v4\\common_google_signin_btn_icon_light_normal_background.9.png"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\common_google_signin_btn_text_dark_normal_background.9.png",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable-hdpi-v4\\common_google_signin_btn_text_dark_normal_background.9.png"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\googleg_disabled_color_18.png",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable-hdpi-v4\\googleg_disabled_color_18.png"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\common_google_signin_btn_text_light_normal_background.9.png",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable-hdpi-v4\\common_google_signin_btn_text_light_normal_background.9.png"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4\\common_google_signin_btn_icon_dark_normal_background.9.png",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable-hdpi-v4\\common_google_signin_btn_icon_dark_normal_background.9.png"
+    }
+]

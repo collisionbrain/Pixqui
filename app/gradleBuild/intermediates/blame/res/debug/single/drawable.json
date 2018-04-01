@@ -1,0 +1,110 @@
+[
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\boton_redondo_azul.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\boton_redondo_azul.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_text_dark.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\selector.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\selector.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_disabled.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_icon_disabled.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_text_light.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_text_light.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\selector_oval_button.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\selector_oval_button.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\border.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\border.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_text_disabled.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_text_disabled.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\spinner_drawable.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\spinner_drawable.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\button_select_text_color_blanco.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\button_select_text_color_blanco.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_light_focused.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_icon_light_focused.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_light.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_icon_light.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\boton_cuadrado_blanco.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\boton_cuadrado_blanco.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_text_light_normal.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_text_light_normal.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\boton_redondo_blanco.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\boton_redondo_blanco.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_dark.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_icon_dark.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_text_dark_focused.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_text_dark_focused.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\boton_cuadrado_azul.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\boton_cuadrado_azul.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\button_round_camera.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\button_round_camera.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_light_normal.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_icon_light_normal.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_dark_focused.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_icon_dark_focused.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\button_round_corners.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\button_round_corners.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_icon_dark_normal.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_icon_dark_normal.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_text_dark_normal.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_text_dark_normal.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\selector_shape_rectangle_button_blue_white.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\selector_shape_rectangle_button_blue_white.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\editext_line.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable\\editext_line.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable\\common_google_signin_btn_text_light_focused.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\drawable\\common_google_signin_btn_text_light_focused.xml"
+    }
+]

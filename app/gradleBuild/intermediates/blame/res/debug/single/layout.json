@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\layout\\list_text_item.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\layout\\list_text_item.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\layout\\camera_connection_fragment.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\layout\\camera_connection_fragment.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\layout\\register_activity.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\layout\\register_activity.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\layout\\splash_screen.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\layout\\splash_screen.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\layout\\principal_activity.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\layout\\principal_activity.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\layout\\activity_camera.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\layout\\activity_camera.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\layout\\camera_connection_fragment_tracking.xml",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\layout\\camera_connection_fragment_tracking.xml"
+    }
+]
