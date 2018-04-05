@@ -21,6 +21,7 @@
     <string name="strApellidos">Apellidos</string>
     <string name="strCorreo">Correo electronico</string>
     <string name="strPassword">Contraseña</string>
+    <string name="strPasswordConfirm">Confirma Contraseña</string>
     <string name="siguiente">Siguiente</string>
 
 </resources>

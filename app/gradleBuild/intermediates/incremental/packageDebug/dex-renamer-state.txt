@@ -1,0 +1,4 @@
+#Wed Apr 04 12:01:46 CDT 2018
+base.0=D\:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main
+renamed.0=classes.dex
+file.0=D\:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\transforms\\dex\\debug\\folders\\1000\\1f\\main\\classes.dex

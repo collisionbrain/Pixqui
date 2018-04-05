@@ -39,12 +39,15 @@
         <activity android:name="com.libre.mixtli.DetectorActivity"
                   android:screenOrientation="portrait"
                   android:label="@string/activity_name_detection">
+        </activity>
+        <activity android:name="com.libre.mixtli.ui.RegisterActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/activity_name_detection">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>

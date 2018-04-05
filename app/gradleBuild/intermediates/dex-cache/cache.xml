@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\592cfe4c43ca03853596e62ef0fcf6bcd9584e1f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_fbc0cd81621b8560f6c40f227cad619559669c66.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\2217d0dd8899507f94542e963a52028a86f2d91f\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="67eb33110dbacb46a48175b08ae0c96761d2c17d">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_f5b2422b533473772ffbd794b8de87062d91b5f3.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\26ad38220c64a323c4889552b02058b78bcbc2ad\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="ee394a892dd21c03a528139c1e8d4e0e1264ac84">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_aa79742ae1ba70353df4a65699114a42a71db1bd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.2.0\support-annotations-25.2.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="4a5a82a027706397fff621b22fd6fa796e91d7c5">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\support-annotations-25.2.0_dea8fe3736762dc65afdfe449336aabd5cc16974.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\d1a66c6b5129731ff7647938a39d16f611c398fc\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="264ad23f9752aabecfa41115c52a25a023a08839">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_c9fb06fc2683ef8443a6ccc858fb3a1984c6aeea.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\aa9d24c4af11255c5d2f1e57d03b52b2939bca86\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="fa0446a14ed5dd3725047d6399ffea771a564b30">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_79aa12bce314c8210b2e050f466be554a5521d74.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\4ecec6feb2a00ee3d5af131151458e77837bd5bf\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="e6aeff19a2ce1eb896557be73cb9ceb56f8d1cf3">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_2f1fd99be0173561968576f0d6686e6227473af2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\92289d4f40f0eb8cbbfcee5449044e44b076ccd3\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="42c9659c973e311ffdb645ed057e5053e0ab5c78">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_0fc19ff400daf1652c1a59dabb6a4c7501df177d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="233d88c6f961d2a84758dfe27b7af61318190c7b">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_d0ab085889442a8a8d5e79ef39bdf263836d4113.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\0eef3ba0d76247ee7e220a8615c21afcd5793bfc\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="122de0d704f76d2bb5cb9db66e00fe90a0a41e78">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_5ca053a357013e1b09b04ff087335752474a188c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\8443bbfef10cb8d3ff7a688da442a149ccbce943\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="e820b7be8c035dd522da4bc822e8a76c8e27921a">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_8832998d922e5edbad3c5213c12190bc16d3cf57.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\02e2347191e5006daab20012333b0023638fda43\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="c5bc72ad3250d065128d1d7514279be703e57bd0">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_b4a537e825d0f95075e60566ece71a68271e5671.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\1154d3dff6bccf7534ae6800f12e2deb01b2e9af\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="5ad3911825107d8dd4b017fdecebfd23c08048dd">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_46da76986fa611847b80c026f3136dbee71a7852.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\39603f912df26fc6cac471bcbb78f4546a0cb70a\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="d2af2ef4d987d753f2e8ee2d1480ab964d5c7273">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_cb3d3080b4f580af550d02c2854dbac399442021.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Users\hgallardo\.android\build-cache\dd0221234c3a6ec66b945269581686a13e020f7e\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.2"
+        sha1="8fe8a8f77d651982ce5e18f6187dc4daf914ac57">
+        <dex dex="D:\Users\hgallardo\tensorflow\tensorflow\examples\android\gradleBuild\intermediates\pre-dexed\debug\classes_f2dde1b896141317653c38ae9d9ab2ee36b01ebf.jar" />
+    </item>
+
+</items>

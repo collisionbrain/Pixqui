@@ -1,14 +1,50 @@
 [
     {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_disable_only_material_light.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\abc_primary_text_disable_only_material_light.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\abc_secondary_text_material_dark.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\abc_secondary_text_material_dark.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\abc_search_url_text.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\abc_search_url_text.xml"
+    },
+    {
         "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\common_google_signin_btn_text_dark.xml",
         "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\color\\common_google_signin_btn_text_dark.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_material_light.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\abc_primary_text_material_light.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\abc_secondary_text_material_light.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\abc_secondary_text_material_light.xml"
     },
     {
         "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\common_google_signin_btn_text_light.xml",
         "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\color\\common_google_signin_btn_text_light.xml"
     },
     {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_disable_only_material_dark.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\abc_primary_text_disable_only_material_dark.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\switch_thumb_material_light.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\switch_thumb_material_light.xml"
+    },
+    {
         "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\common_google_signin_btn_tint.xml",
         "source": "D:\\Users\\hgallardo\\.android\\build-cache\\32659a5f600bc1eff141267f6cb2e4eaa0fb778c\\output\\res\\color\\common_google_signin_btn_tint.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\abc_primary_text_material_dark.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\abc_primary_text_material_dark.xml"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\color\\switch_thumb_material_dark.xml",
+        "source": "D:\\Users\\hgallardo\\.android\\build-cache\\813d2f51d6310f76595f4d22b310dff55d3446aa\\output\\res\\color\\switch_thumb_material_dark.xml"
     }
 ]

@@ -40,6 +40,7 @@ allprojects {
         google()
         maven {
             url "https://maven.google.com" // Google's Maven repository
+            url 'https://dl.bintray.com/spark/maven'
         }
 
     }
@@ -87,6 +88,7 @@ dependencies {
     compile 'org.tensorflow:tensorflow-android:1.4.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-auth:11.8.0'
+    compile 'me.spark:submitbutton:1.0.1'
 
 
 }
