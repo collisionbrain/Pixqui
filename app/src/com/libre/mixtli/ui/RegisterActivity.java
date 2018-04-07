@@ -88,8 +88,10 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
+
                             Toast.makeText(context, "Verification email sent to " + firebaseUser.getEmail(), Toast.LENGTH_LONG
                             ).show();
+
                         } else {
                             Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_LONG).show();
                         }

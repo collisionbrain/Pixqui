@@ -4,9 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
+import android.view.Gravity;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import com.libre.mixtli.CameraActivity;
 import com.libre.mixtli.R;
+import com.libre.mixtli.ui.animations.DotProgressBar;
+import com.libre.mixtli.ui.animations.DotProgressBarBuilder;
 
 /**
  * Created by hgallardo on 10/03/18.
@@ -22,9 +28,8 @@ public class Splash extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash_screen);
+        DotProgressBar dotProgressBar = (DotProgressBar) findViewById(R.id.progress_bar);
 
-        /* New Handler to start the Menu-Activity
-         * and close this Splash-Screen after some seconds.*/
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {

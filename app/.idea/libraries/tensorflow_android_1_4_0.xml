@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="tensorflow-android-1.4.0">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/d0bfbfae55fca10af9ff9f7d6544c99c0b8ce078/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/d0bfbfae55fca10af9ff9f7d6544c99c0b8ce078/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/ebd4c279d2031f4bc9c81a0cb87f095c56d0c0e9/output/res" />
+      <root url="jar://$USER_HOME$/.android/build-cache/ebd4c279d2031f4bc9c81a0cb87f095c56d0c0e9/output/jars/classes.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

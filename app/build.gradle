@@ -19,8 +19,6 @@
 
 // It is necessary to customize Gradle's build directory, as otherwise
 // it will conflict with the BUILD file used by Bazel on case-insensitive OSs.
-project.buildDir = 'gradleBuild'
-getProject().setBuildDir('gradleBuild')
 
 buildscript {
     repositories {
