@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory
+        android:title="Camara">
+
+        <CheckBoxPreference
+            android:key="checkbox_capture_positive"
+            android:title="@string/strBackCamera"
+            android:checked="true"/>
+
+
+        <CheckBoxPreference
+            android:key="checkbox_capture_negative"
+            android:title="@string/strFrontCamera"
+            android:checked="false"/>
+
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:title="Formato">
+
+        <CheckBoxPreference
+            android:key="checkbox_capture_positive"
+            android:title="@string/strFinalJPG"
+            android:checked="true"/>
+
+
+        <CheckBoxPreference
+            android:key="checkbox_capture_negative"
+            android:title="@string/strFinalMPG"
+            android:checked="false"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

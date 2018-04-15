@@ -16,6 +16,7 @@
 
 package com.libre.mixtli;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -36,8 +37,10 @@ import com.libre.mixtli.R;
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
+import com.libre.mixtli.task.ReportEventService;
 import com.libre.mixtli.tracking.MultiBoxTracker;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -242,9 +245,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             LOGGER.i("Running detection on image " + currTimestamp);
             final long startTime = SystemClock.uptimeMillis();
             final List<Classifier.Recognition> results = detector.recognizeImage(croppedBitmap);
+            final ByteArrayOutputStream stream = new ByteArrayOutputStream();
             lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
 
             cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
+            croppedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            byte[] byteArrayToUpload = stream.toByteArray();
+
+
             final Canvas canvas = new Canvas(cropCopyBitmap);
             final Paint paint = new Paint();
             paint.setColor(Color.RED);
@@ -274,6 +282,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             computingDetection = false;
           }
         });
+  }
+
+
+  private  void reportEventService(final byte [] bytes){
+    Intent msgIntent = new Intent(DetectorActivity.this, ReportEventService.class);
+    msgIntent.putExtra("byteBmp", bytes);
+    startService(msgIntent);
   }
 
   @Override

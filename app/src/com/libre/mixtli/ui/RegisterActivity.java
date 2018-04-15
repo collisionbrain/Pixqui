@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,7 +22,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
+import com.libre.mixtli.prefs.Pref;
+import com.spark.submitbutton.SubmitButton;
 
 /**
  * Created by hgallardo on 07/03/18.
@@ -29,23 +33,25 @@ import com.libre.mixtli.R;
 
 public class RegisterActivity  extends Activity implements View.OnClickListener {
     private static final String TAG = "EmailPasswordActivity";
-    private EditText edtMail, edtPassword,edtName,edtLastName;
-    private Button btnRegister;
+    private EditText edtMail, edtPassword,edtName,edtPasswordConfirm;
+    private SubmitButton btnRegister;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private TextView mTextViewProfile;
     private Context context;
+    private Pref prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
         context=this;
+        prefs=new Pref(this);
         edtMail =(EditText) findViewById(R.id.edtCorreo);
         edtName = (EditText) findViewById(R.id.edtNombre);
-        edtLastName = (EditText) findViewById(R.id.edtApellidos);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
-        btnRegister=(Button) findViewById(R.id.btnRegistrar);
+        edtPasswordConfirm= (EditText) findViewById(R.id.edtPasswordConfirmation);
+        btnRegister=(SubmitButton) findViewById(R.id.btnRegistrar);
         btnRegister.setOnClickListener(this);
 
         mAuth = FirebaseAuth.getInstance();
@@ -58,7 +64,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                 } else {
                     Log.d(TAG, "onAuthStateChanged:signed_out");
                 }
-                updateUI(user);
+                //updateUI(user);
             }
         };
     }
@@ -82,9 +88,26 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         switch (v.getId()) {
 
             case R.id.btnRegistrar:
-
-                final FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                firebaseUser.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                String email=edtMail.getText().toString();
+                String password=edtPassword.getText().toString();
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    prefs.saveData("REGISTER_USER_KEY",task.getResult().getUser().getUid());
+                                    Intent registerIntent = new Intent(RegisterActivity.this,DetectorActivity.class);
+                                    RegisterActivity.this.startActivity(registerIntent);
+                                    RegisterActivity.this.finish();
+                                } else {
+                                    //CHECK INTERNET
+                                    //CHECK
+                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+               /* firebaseUser.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
@@ -98,7 +121,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
 
                     }
                 });
-                break;
+                break;*/
         }
     }
 
@@ -173,9 +196,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         } else if (TextUtils.isEmpty(edtName.getText().toString())) {
             //mLayoutName.setError("Required.");
             return false;
-        } else if (TextUtils.isEmpty(edtLastName.getText().toString())) {
-            // mLayoutLastName.setError("Required.");
-            return false;
         } else {
             //mLayoutEmail.setError(null);
             //mLayoutPassword.setError(null);
@@ -200,9 +220,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                 findViewById(R.id.btnRegistrar).setVisibility(View.VISIBLE);
             }
 
-
-        } else {
-            mTextViewProfile.setText(null);
 
         }
         //hideProgressDialog();

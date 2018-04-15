@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.libre.mixtli.CameraActivity;
+import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
+import com.libre.mixtli.prefs.Pref;
 import com.libre.mixtli.ui.animations.DotProgressBar;
 import com.libre.mixtli.ui.animations.DotProgressBarBuilder;
 
@@ -20,24 +22,33 @@ import com.libre.mixtli.ui.animations.DotProgressBarBuilder;
 
 public class Splash extends Activity {
 
-    /** Duration of wait **/
-    private final int SPLASH_DISPLAY_LENGTH = 1000;
-
-    /** Called when the activity is first created. */
+    private Pref prefs;
+    private String REGISTER_USER_KEY="REGISTER_USER_KEY";
+    private String ID_CAMERA_PREFERENCE="ID_CAMERA_PREFERENCE";
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.splash_screen);
-        DotProgressBar dotProgressBar = (DotProgressBar) findViewById(R.id.progress_bar);
-
+        this.prefs=new Pref(this);
+        prefs.saveData(ID_CAMERA_PREFERENCE,"0");
         new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-                /* Create an Intent that will start the Menu-Activity. */
-                Intent mainIntent = new Intent(Splash.this,CameraActivity.class);
-                Splash.this.startActivity(mainIntent);
-                Splash.this.finish();
-            }
-        }, SPLASH_DISPLAY_LENGTH);
+                @Override
+                public void run() {
+
+                    String key=prefs.loadData(REGISTER_USER_KEY);
+                    if(key==null){
+                        Intent registerIntent = new Intent(Splash.this,RegisterActivity.class);
+                        Splash.this.startActivity(registerIntent);
+                        Splash.this.finish();
+                    }else{
+                        Intent registerIntent = new Intent(Splash.this,DetectorActivity.class);
+                        Splash.this.startActivity(registerIntent);
+                        Splash.this.finish();
+                    }
+                }
+            }, 3000);
+
     }
+
+
 }

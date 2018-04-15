@@ -1,7 +1,15 @@
 [
     {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi\\pixqui_logo_no_text.png",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable-hdpi\\pixqui_logo_no_text.png"
+    },
+    {
         "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi\\ic_launcher.png",
         "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi\\pixqui_logo.png",
+        "source": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\res\\drawable-hdpi\\pixqui_logo.png"
     },
     {
         "merged": "D:\\Users\\hgallardo\\tensorflow\\tensorflow\\examples\\android\\gradleBuild\\intermediates\\res\\merged\\debug\\drawable-hdpi\\tile.9.png",

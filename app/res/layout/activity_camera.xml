@@ -13,10 +13,75 @@
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#000"
+    android:orientation="vertical"
+    tools:context="com.libre.mixtli.CameraActivity">
+<FrameLayout
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#000"
-    tools:context="com.libre.mixtli.CameraActivity" />
+    android:layout_height="match_parent"></FrameLayout>
+    <LinearLayout
+        android:id="@+id/lytPrincipal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/blueButtonsTransparent"
+        android:orientation="vertical"
+        android:weightSum="100">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50" >
+            <ImageView
+                android:id="@+id/btnSettings"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/ic_settings_white_24dp"
+                android:padding="50dp"
+                android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:gravity="center" >
+            <com.spark.submitbutton.SubmitButton
+                android:id="@+id/btnDemo"
+                android:layout_width="900dp"
+                android:layout_height="match_parent"
+                android:text="Ver Demo"
+                android:textColor="@color/gray"
+                app:sub_btn_background="@color/white"
+                app:sub_btn_duration="3000"
+                app:sub_btn_line_color="@color/blueBorders"
+                app:sub_btn_ripple_color="@color/blueBorders"
+                app:sub_btn_tick_color="@color/white" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="20"
+            android:gravity="center">
+           <com.spark.submitbutton.SubmitButton
+                android:id="@+id/btnInicar"
+                android:layout_width="900dp"
+                android:layout_height="match_parent"
+                android:text="Iniciar "
+                android:textColor="@color/gray"
+                app:sub_btn_background="@color/white"
+                app:sub_btn_duration="3000"
+                app:sub_btn_line_color="@color/blueBorders"
+                app:sub_btn_ripple_color="@color/blueBorders"
+                app:sub_btn_tick_color="@color/white" />
+
+        </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>

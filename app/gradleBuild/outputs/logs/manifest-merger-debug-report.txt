@@ -1,6 +1,6 @@
 -- Merging decision tree log ---
 manifest
-ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:18:1-50:12
+ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:18:1-53:12
 	package
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:19:5-31
 	xmlns:android
@@ -41,23 +41,27 @@ MERGED from [com.google.firebase:firebase-common:11.8.0] D:\Users\hgallardo\.and
 MERGED from [com.google.firebase:firebase-common-license:11.8.0] D:\Users\hgallardo\.android\build-cache\0805ba2577f1cd67b0b6e2ea5cb976926ffbcb24\output\AndroidManifest.xml:4:5-43
 MERGED from [com.google.android.gms:play-services-tasks:11.8.0] D:\Users\hgallardo\.android\build-cache\39603f912df26fc6cac471bcbb78f4546a0cb70a\output\AndroidManifest.xml:5:5-44
 MERGED from [com.google.android.gms:play-services-basement:11.8.0] D:\Users\hgallardo\.android\build-cache\1154d3dff6bccf7534ae6800f12e2deb01b2e9af\output\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] D:\Users\hgallardo\.android\build-cache\1d0dfb2396080d01ed37b42608441cc89b1a63bb\output\AndroidManifest.xml:4:5-43
+MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] D:\Users\hgallardo\.android\build-cache\13d8f829f509c4c48fb0464cda8a99300f4be16b\output\AndroidManifest.xml:4:5-43
+MERGED from [com.google.firebase:firebase-auth-license:11.8.0] D:\Users\hgallardo\.android\build-cache\c6233398e37ca19d0ed0222d631285917eb678cd\output\AndroidManifest.xml:4:5-43
+MERGED from [me.spark:submitbutton:1.0.1] D:\Users\hgallardo\.android\build-cache\a26dfe2fe4f6054c23470c3197d5c4508ace81da\output\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:23.4.0] D:\Users\hgallardo\.android\build-cache\813d2f51d6310f76595f4d22b310dff55d3446aa\output\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:animated-vector-drawable:23.4.0] D:\Users\hgallardo\.android\build-cache\0601f1db7eaa418fc25d699e769eab0079b980ed\output\AndroidManifest.xml:5:5-44
+MERGED from [com.android.support:support-vector-drawable:23.4.0] D:\Users\hgallardo\.android\build-cache\735f5fc03d0876f6f0b5e240716e5794830a8e2a\output\AndroidManifest.xml:5:5-43
 MERGED from [com.android.support:support-v4:25.2.0] D:\Users\hgallardo\.android\build-cache\592cfe4c43ca03853596e62ef0fcf6bcd9584e1f\output\AndroidManifest.xml:21:5-23:54
 MERGED from [com.android.support:support-fragment:25.2.0] D:\Users\hgallardo\.android\build-cache\dd0221234c3a6ec66b945269581686a13e020f7e\output\AndroidManifest.xml:21:5-23:60
 MERGED from [com.android.support:support-media-compat:25.2.0] D:\Users\hgallardo\.android\build-cache\26ad38220c64a323c4889552b02058b78bcbc2ad\output\AndroidManifest.xml:21:5-23:63
 MERGED from [com.android.support:support-core-ui:25.2.0] D:\Users\hgallardo\.android\build-cache\aa9d24c4af11255c5d2f1e57d03b52b2939bca86\output\AndroidManifest.xml:21:5-23:58
 MERGED from [com.android.support:support-core-utils:25.2.0] D:\Users\hgallardo\.android\build-cache\8443bbfef10cb8d3ff7a688da442a149ccbce943\output\AndroidManifest.xml:21:5-23:61
 MERGED from [com.android.support:support-compat:25.2.0] D:\Users\hgallardo\.android\build-cache\2217d0dd8899507f94542e963a52028a86f2d91f\output\AndroidManifest.xml:21:5-23:58
-MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] D:\Users\hgallardo\.android\build-cache\1d0dfb2396080d01ed37b42608441cc89b1a63bb\output\AndroidManifest.xml:4:5-43
-MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] D:\Users\hgallardo\.android\build-cache\13d8f829f509c4c48fb0464cda8a99300f4be16b\output\AndroidManifest.xml:4:5-43
-MERGED from [com.google.firebase:firebase-auth-license:11.8.0] D:\Users\hgallardo\.android\build-cache\c6233398e37ca19d0ed0222d631285917eb678cd\output\AndroidManifest.xml:4:5-43
 	tools:overrideLibrary
-		ADDED from [com.android.support:support-v4:25.2.0] D:\Users\hgallardo\.android\build-cache\592cfe4c43ca03853596e62ef0fcf6bcd9584e1f\output\AndroidManifest.xml:23:9-51
+		ADDED from [com.android.support:appcompat-v7:23.4.0] D:\Users\hgallardo\.android\build-cache\813d2f51d6310f76595f4d22b310dff55d3446aa\output\AndroidManifest.xml:23:9-75
 	android:targetSdkVersion
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:29:9-38
 	android:minSdkVersion
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:28:9-35
 application
-ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:31:5-48:19
+ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:31:5-51:19
 MERGED from [org.tensorflow:tensorflow-android:1.4.0] D:\Users\hgallardo\.android\build-cache\d0bfbfae55fca10af9ff9f7d6544c99c0b8ce078\output\AndroidManifest.xml:5:5-6:19
 MERGED from [com.google.firebase:firebase-core:11.8.0] D:\Users\hgallardo\.android\build-cache\e159f8625811539dd21b72c691a9ed97e9332776\output\AndroidManifest.xml:5:5-20
 MERGED from [com.google.firebase:firebase-analytics:11.8.0] D:\Users\hgallardo\.android\build-cache\92289d4f40f0eb8cbbfcee5449044e44b076ccd3\output\AndroidManifest.xml:27:5-52:19
@@ -73,17 +77,23 @@ MERGED from [com.google.firebase:firebase-common:11.8.0] D:\Users\hgallardo\.and
 MERGED from [com.google.firebase:firebase-common-license:11.8.0] D:\Users\hgallardo\.android\build-cache\0805ba2577f1cd67b0b6e2ea5cb976926ffbcb24\output\AndroidManifest.xml:5:5-20
 MERGED from [com.google.android.gms:play-services-tasks:11.8.0] D:\Users\hgallardo\.android\build-cache\39603f912df26fc6cac471bcbb78f4546a0cb70a\output\AndroidManifest.xml:7:5-20
 MERGED from [com.google.android.gms:play-services-basement:11.8.0] D:\Users\hgallardo\.android\build-cache\1154d3dff6bccf7534ae6800f12e2deb01b2e9af\output\AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] D:\Users\hgallardo\.android\build-cache\1d0dfb2396080d01ed37b42608441cc89b1a63bb\output\AndroidManifest.xml:5:5-20
+MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] D:\Users\hgallardo\.android\build-cache\13d8f829f509c4c48fb0464cda8a99300f4be16b\output\AndroidManifest.xml:5:5-20
+MERGED from [com.google.firebase:firebase-auth-license:11.8.0] D:\Users\hgallardo\.android\build-cache\c6233398e37ca19d0ed0222d631285917eb678cd\output\AndroidManifest.xml:5:5-20
+MERGED from [me.spark:submitbutton:1.0.1] D:\Users\hgallardo\.android\build-cache\a26dfe2fe4f6054c23470c3197d5c4508ace81da\output\AndroidManifest.xml:11:5-15:19
+MERGED from [com.android.support:appcompat-v7:23.4.0] D:\Users\hgallardo\.android\build-cache\813d2f51d6310f76595f4d22b310dff55d3446aa\output\AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:animated-vector-drawable:23.4.0] D:\Users\hgallardo\.android\build-cache\0601f1db7eaa418fc25d699e769eab0079b980ed\output\AndroidManifest.xml:7:5-20
+MERGED from [com.android.support:support-vector-drawable:23.4.0] D:\Users\hgallardo\.android\build-cache\735f5fc03d0876f6f0b5e240716e5794830a8e2a\output\AndroidManifest.xml:7:5-20
 MERGED from [com.android.support:support-v4:25.2.0] D:\Users\hgallardo\.android\build-cache\592cfe4c43ca03853596e62ef0fcf6bcd9584e1f\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-fragment:25.2.0] D:\Users\hgallardo\.android\build-cache\dd0221234c3a6ec66b945269581686a13e020f7e\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-media-compat:25.2.0] D:\Users\hgallardo\.android\build-cache\26ad38220c64a323c4889552b02058b78bcbc2ad\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-core-ui:25.2.0] D:\Users\hgallardo\.android\build-cache\aa9d24c4af11255c5d2f1e57d03b52b2939bca86\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-core-utils:25.2.0] D:\Users\hgallardo\.android\build-cache\8443bbfef10cb8d3ff7a688da442a149ccbce943\output\AndroidManifest.xml:25:5-20
 MERGED from [com.android.support:support-compat:25.2.0] D:\Users\hgallardo\.android\build-cache\2217d0dd8899507f94542e963a52028a86f2d91f\output\AndroidManifest.xml:25:5-20
-MERGED from [com.google.android.gms:play-services-basement-license:11.8.0] D:\Users\hgallardo\.android\build-cache\1d0dfb2396080d01ed37b42608441cc89b1a63bb\output\AndroidManifest.xml:5:5-20
-MERGED from [com.google.android.gms:play-services-tasks-license:11.8.0] D:\Users\hgallardo\.android\build-cache\13d8f829f509c4c48fb0464cda8a99300f4be16b\output\AndroidManifest.xml:5:5-20
-MERGED from [com.google.firebase:firebase-auth-license:11.8.0] D:\Users\hgallardo\.android\build-cache\c6233398e37ca19d0ed0222d631285917eb678cd\output\AndroidManifest.xml:5:5-20
 	android:label
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:33:9-41
+	android:supportsRtl
+		ADDED from [me.spark:submitbutton:1.0.1] D:\Users\hgallardo\.android\build-cache\a26dfe2fe4f6054c23470c3197d5c4508ace81da\output\AndroidManifest.xml:14:9-35
 	android:debuggable
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:32:9-34
 	android:allowBackup
@@ -93,27 +103,35 @@ MERGED from [com.google.firebase:firebase-auth-license:11.8.0] D:\Users\hgallard
 	android:theme
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:35:9-45
 activity#com.libre.mixtli.DetectorActivity
-ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:39:9-46:20
+ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:39:9-42:20
 	android:screenOrientation
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:40:19-55
 	android:label
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:41:19-66
 	android:name
 		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:39:19-67
+activity#com.libre.mixtli.ui.RegisterActivity
+ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:43:9-50:20
+	android:screenOrientation
+		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:44:13-49
+	android:label
+		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:45:13-60
+	android:name
+		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:43:19-70
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:42:13-45:29
+ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:46:13-49:29
 action#android.intent.action.MAIN
-ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:43:17-69
+ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:47:17-69
 	android:name
-		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:43:25-66
+		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:47:25-66
 category#android.intent.category.LAUNCHER
-ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:44:17-77
+ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:48:17-77
 	android:name
-		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:44:27-74
+		ADDED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:48:27-74
 uses-permission#android.permission.READ_PHONE_STATE
-IMPLIED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:18:1-50:12 reason: tensorflow.contrib.android has a targetSdkVersion < 4
+IMPLIED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:18:1-53:12 reason: tensorflow.contrib.android has a targetSdkVersion < 4
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-IMPLIED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:18:1-50:12 reason: tensorflow.contrib.android requested WRITE_EXTERNAL_STORAGE
+IMPLIED from D:\Users\hgallardo\tensorflow\tensorflow\examples\android\AndroidManifest.xml:18:1-53:12 reason: tensorflow.contrib.android requested WRITE_EXTERNAL_STORAGE
 uses-permission#android.permission.INTERNET
 ADDED from [com.google.firebase:firebase-analytics:11.8.0] D:\Users\hgallardo\.android\build-cache\92289d4f40f0eb8cbbfcee5449044e44b076ccd3\output\AndroidManifest.xml:23:5-67
 MERGED from [com.google.firebase:firebase-analytics-impl:11.8.0] D:\Users\hgallardo\.android\build-cache\0eef3ba0d76247ee7e220a8615c21afcd5793bfc\output\AndroidManifest.xml:23:5-67

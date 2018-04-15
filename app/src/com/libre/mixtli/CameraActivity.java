@@ -39,11 +39,14 @@ import android.util.Size;
 import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.libre.mixtli.R;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
+import com.spark.submitbutton.SubmitButton;
 
 import java.nio.ByteBuffer;
 
@@ -72,6 +75,11 @@ public abstract class CameraActivity extends Activity
   private Runnable postInferenceCallback;
   private Runnable imageConverter;
 
+  private SubmitButton btnDemo;
+  private SubmitButton btnInicio;
+  private ImageView btnSettings;
+  private LinearLayout lytPrincipal;
+
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
@@ -79,6 +87,10 @@ public abstract class CameraActivity extends Activity
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
     setContentView(R.layout.activity_camera);
+    btnDemo=(SubmitButton) findViewById(R.id.btnDemo);
+    btnInicio=(SubmitButton) findViewById(R.id.btnInicar);
+    btnSettings=(ImageView) findViewById(R.id.btnSettings);
+    lytPrincipal=(LinearLayout) findViewById(R.id.lytPrincipal);
 
     if (hasPermission()) {
       setFragment();
@@ -318,6 +330,7 @@ public abstract class CameraActivity extends Activity
 
   private String chooseCamera() {
     final CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+
     try {
       for (final String cameraId : manager.getCameraIdList()) {
         final CameraCharacteristics characteristics = manager.getCameraCharacteristics(cameraId);
@@ -370,7 +383,7 @@ public abstract class CameraActivity extends Activity
               getLayoutId(),
               getDesiredPreviewFrameSize());
 
-      camera2Fragment.setCamera(cameraId);
+      camera2Fragment.setCamera("1");
       fragment = camera2Fragment;
     } else {
       fragment =
