@@ -30,13 +30,9 @@
         android:targetSdkVersion="23" />
 
     <application android:allowBackup="true"
-        android:debuggable="true"
         android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon_172"
         android:theme="@style/MaterialTheme">
-
-
-
         <activity android:name="com.libre.mixtli.ui.Splash"
                   android:screenOrientation="portrait">
             <intent-filter>
