@@ -38,7 +38,11 @@ import android.os.Trace;
 import android.util.Size;
 import android.view.KeyEvent;
 import android.view.Surface;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -78,7 +82,10 @@ public abstract class CameraActivity extends Activity
   private SubmitButton btnDemo;
   private SubmitButton btnInicio;
   private ImageView btnSettings;
-  private LinearLayout lytPrincipal;
+  private LinearLayout lytPrincipal,lytDemo;
+  private ImageView gunOn,gunOff;
+  private boolean startDemo=false;
+  final Animation animation = new AlphaAnimation((float) 0.5, 0);
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -88,10 +95,18 @@ public abstract class CameraActivity extends Activity
 
     setContentView(R.layout.activity_camera);
     btnDemo=(SubmitButton) findViewById(R.id.btnDemo);
+    btnDemo.setOnClickListener(demoListener);
     btnInicio=(SubmitButton) findViewById(R.id.btnInicar);
     btnSettings=(ImageView) findViewById(R.id.btnSettings);
     lytPrincipal=(LinearLayout) findViewById(R.id.lytPrincipal);
+    lytDemo=(LinearLayout) findViewById(R.id.lytDemo);
+    gunOn=(ImageView) findViewById(R.id.gunOn);
+    gunOff=(ImageView) findViewById(R.id.gunOff);
 
+    animation.setDuration(500);
+    animation.setInterpolator(new LinearInterpolator());
+    animation.setRepeatCount(Animation.INFINITE);
+    animation.setRepeatMode(Animation.REVERSE);
     if (hasPermission()) {
       setFragment();
     } else {
@@ -159,7 +174,10 @@ public abstract class CameraActivity extends Activity
             isProcessingFrame = false;
           }
         };
-    processImage();
+
+        if(startDemo) {
+          processImage();
+        }
   }
 
   /**
@@ -460,8 +478,28 @@ public abstract class CameraActivity extends Activity
   }
 
   protected abstract void processImage();
-
   protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
   protected abstract int getLayoutId();
   protected abstract Size getDesiredPreviewFrameSize();
+
+  public void setGunAllert(){
+    this.runOnUiThread(new Runnable() {
+      public void run() {
+        gunOff.setVisibility(View.GONE);
+        gunOn.setVisibility(View.VISIBLE);
+        gunOn.startAnimation(animation);
+      }
+    });
+
+
+  }
+  View.OnClickListener demoListener=new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      lytPrincipal.setVisibility(View.GONE);
+      startDemo=true;
+      processImage();
+      lytDemo.setVisibility(View.VISIBLE);
+    }
+  };
 }

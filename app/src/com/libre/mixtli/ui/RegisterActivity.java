@@ -53,7 +53,6 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         edtPasswordConfirm= (EditText) findViewById(R.id.edtPasswordConfirmation);
         btnRegister=(SubmitButton) findViewById(R.id.btnRegistrar);
         btnRegister.setOnClickListener(this);
-
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -102,89 +101,18 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                                 } else {
                                     //CHECK INTERNET
                                     //CHECK
+                                    Exception exception=task.getException();
+                                    exception.getMessage();
+
                                     Toast.makeText(RegisterActivity.this, "Authentication failed.",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }
                         });
-               /* firebaseUser.sendEmailVerification().addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
 
-                            Toast.makeText(context, "Verification email sent to " + firebaseUser.getEmail(), Toast.LENGTH_LONG
-                            ).show();
-
-                        } else {
-                            Toast.makeText(context, task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-                });
-                break;*/
         }
     }
 
-    private void createAccount(String email, String password) {
-        if (!validateForm()) {
-            return;
-        }
-       // showProgressDialog();
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (!task.isSuccessful()) {
-                    mTextViewProfile.setTextColor(Color.RED);
-                    mTextViewProfile.setText(task.getException().getMessage());
-                } else {
-                    mTextViewProfile.setTextColor(Color.DKGRAY);
-                }
-               // hideProgressDialog();
-            }
-        });
-    }
-
-    private void signIn(String email, String password) {
-        if (!validateForm()) {
-            return;
-        }
-        //showProgressDialog();
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-                if (!task.isSuccessful()) {
-                    mTextViewProfile.setTextColor(Color.RED);
-                    mTextViewProfile.setText(task.getException().getMessage());
-                } else {
-
-                    task.getResult().getUser();
-                    mTextViewProfile.setTextColor(Color.DKGRAY);
-                }
-               // hideProgressDialog();
-            }
-        });
-    }
-
-    private void signOut() {
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setMessage("Sing out");
-        alert.setCancelable(false);
-        alert.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                mAuth.signOut();
-                updateUI(null);
-            }
-        });
-        alert.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        alert.show();
-    }
 
     private boolean validateForm() {
         if (TextUtils.isEmpty(edtMail.getText().toString())) {
@@ -192,6 +120,9 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
             return false;
         } else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
             // mLayoutPassword.setError("Required.");
+            return false;
+        } else if (!edtPassword.getText().toString().equals(edtPasswordConfirm.getText().toString())) {
+            //mLayoutName.setError("Required.");
             return false;
         } else if (TextUtils.isEmpty(edtName.getText().toString())) {
             //mLayoutName.setError("Required.");
@@ -203,27 +134,7 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         }
     }
 
-    private void updateUI(FirebaseUser user) {
-        if (user != null) {
 
-            mTextViewProfile.setText("DisplayName: " + user.getDisplayName());
-            mTextViewProfile.append("\n\n");
-            mTextViewProfile.append("Email: " + user.getEmail());
-            mTextViewProfile.append("\n\n");
-            mTextViewProfile.append("Firebase ID: " + user.getUid());
-            mTextViewProfile.append("\n\n");
-            mTextViewProfile.append("Email Verification: " + user.isEmailVerified());
-
-            if (user.isEmailVerified()) {
-                findViewById(R.id.btnRegistrar).setVisibility(View.GONE);
-            } else {
-                findViewById(R.id.btnRegistrar).setVisibility(View.VISIBLE);
-            }
-
-
-        }
-        //hideProgressDialog();
-    }
 
 
 }

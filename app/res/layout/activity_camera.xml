@@ -19,7 +19,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#000"
+
     android:orientation="vertical"
     tools:context="com.libre.mixtli.CameraActivity">
 <FrameLayout
@@ -36,52 +36,96 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="50" >
+            android:layout_weight="70" >
             <ImageView
                 android:id="@+id/btnSettings"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
                 android:src="@drawable/ic_settings_white_24dp"
                 android:padding="50dp"
                 android:layout_alignParentRight="true"/>
 
             </RelativeLayout>
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="20"
-            android:gravity="center" >
-            <com.spark.submitbutton.SubmitButton
-                android:id="@+id/btnDemo"
-                android:layout_width="900dp"
+            android:layout_weight="30"
+            android:orientation="horizontal"
+            android:weightSum="100">
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="50"
                 android:layout_height="match_parent"
-                android:text="Ver Demo"
-                android:textColor="@color/gray"
-                app:sub_btn_background="@color/white"
-                app:sub_btn_duration="3000"
-                app:sub_btn_line_color="@color/blueBorders"
-                app:sub_btn_ripple_color="@color/blueBorders"
-                app:sub_btn_tick_color="@color/white" />
+                android:gravity="center" >
+                <com.spark.submitbutton.SubmitButton
+                    android:id="@+id/btnDemo"
+                    android:layout_width="900dp"
+                    android:layout_height="match_parent"
+                    android:text="Ver Demo"
+                    android:textColor="@color/gray"
+                    app:sub_btn_background="@color/white"
+                    app:sub_btn_duration="3000"
+                    app:sub_btn_line_color="@color/blueBorders"
+                    app:sub_btn_ripple_color="@color/blueBorders"
+                    app:sub_btn_tick_color="@color/white" />
 
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="20"
-            android:gravity="center">
-           <com.spark.submitbutton.SubmitButton
-                android:id="@+id/btnInicar"
-                android:layout_width="900dp"
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="0dp"
+                android:layout_weight="50"
                 android:layout_height="match_parent"
-                android:text="Iniciar "
-                android:textColor="@color/gray"
-                app:sub_btn_background="@color/white"
-                app:sub_btn_duration="3000"
-                app:sub_btn_line_color="@color/blueBorders"
-                app:sub_btn_ripple_color="@color/blueBorders"
-                app:sub_btn_tick_color="@color/white" />
+                android:gravity="center">
+                <com.spark.submitbutton.SubmitButton
+                    android:id="@+id/btnInicar"
+                    android:layout_width="900dp"
+                    android:layout_height="match_parent"
+                    android:text="Iniciar "
+                    android:textColor="@color/gray"
+                    app:sub_btn_background="@color/white"
+                    app:sub_btn_duration="3000"
+                    app:sub_btn_line_color="@color/blueBorders"
+                    app:sub_btn_ripple_color="@color/blueBorders"
+                    app:sub_btn_tick_color="@color/white" />
 
-        </RelativeLayout>
+            </RelativeLayout>
         </LinearLayout>
+
+        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/lytDemo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+         android:orientation="vertical"
+        android:visibility="gone"
+        android:weightSum="100">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="70" >
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="30"
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+        <ImageView
+            android:id="@+id/gunOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_gun"
+            />
+            <ImageView
+                android:id="@+id/gunOn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/icon_gun_green"
+                android:visibility="gone"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
 
     </RelativeLayout>

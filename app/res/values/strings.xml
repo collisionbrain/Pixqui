@@ -23,6 +23,7 @@
     <string name="strPassword">Contraseña</string>
     <string name="strPasswordConfirm">Confirma Contraseña</string>
     <string name="siguiente">Siguiente</string>
+    <string name="aceptar">Aceptar</string>
     <string name="strFrontCamera">Usar Camara Frontal</string>
     <string name="strBackCamera">Usar Camara Principal</string>
     <string name="strFinalJPG">Fotografia</string>

@@ -16,6 +16,7 @@
 
 package com.libre.mixtli;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -27,6 +28,7 @@ import android.graphics.Paint.Style;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Size;
 import android.util.TypedValue;
@@ -37,6 +39,7 @@ import com.libre.mixtli.R;
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
+import com.libre.mixtli.prefs.Pref;
 import com.libre.mixtli.task.ReportEventService;
 import com.libre.mixtli.tracking.MultiBoxTracker;
 
@@ -68,7 +71,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private static final DetectorMode MODE = DetectorMode.TF_OD_API;
 
   // Minimum detection confidence to track a detection.
-  private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.6f;
+  private static final float MINIMUM_CONFIDENCE_TF_OD_API = 0.8f;
 
   private static final boolean MAINTAIN_ASPECT = MODE == DetectorMode.YOLO;
 
@@ -98,6 +101,18 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private byte[] luminanceCopy;
 
   private BorderedText borderedText;
+  private Pref prefs;
+  private Context context;
+  private CameraActivity activity ;
+
+
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    LOGGER.d("onCreate " + this);
+    super.onCreate(null);
+    context=this;
+  }
+
   @Override
   public void onPreviewSizeChosen(final Size size, final int rotation) {
     final float textSizePx =
@@ -206,6 +221,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     ++timestamp;
     final long currTimestamp = timestamp;
     byte[] originalLuminance = getLuminance();
+    activity = (CameraActivity)context;
     tracker.onFrame(
         previewWidth,
         previewHeight,
@@ -265,11 +281,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
                 new LinkedList<Classifier.Recognition>();
 
             for (final Classifier.Recognition result : results) {
-              final RectF location = result.getLocation();
+               final RectF location = result.getLocation();
               if (location != null && result.getConfidence() >= minimumConfidence) {
+                //Toast.makeText(DetectorActivity.this,"Pistola:" +result.getConfidence().toString() , Toast.LENGTH_SHORT).show();
+                activity.setGunAllert();
                 canvas.drawRect(location, paint);
-
                 cropToFrameTransform.mapRect(location);
+
                 result.setLocation(location);
                 mappedRecognitions.add(result);
               }
@@ -286,8 +304,12 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
 
   private  void reportEventService(final byte [] bytes){
+
+
+    prefs=new Pref(this);
     Intent msgIntent = new Intent(DetectorActivity.this, ReportEventService.class);
     msgIntent.putExtra("byteBmp", bytes);
+    msgIntent.putExtra("idUser",prefs.loadData("REGISTER_USER_KEY"));
     startService(msgIntent);
   }
 

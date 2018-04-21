@@ -19,7 +19,7 @@ public class ActivitySettings extends PreferenceActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        addPreferencesFromResource(R.layout.settings_app);
+        addPreferencesFromResource(R.xml.settings_app);
 
         CheckBoxPreference checkCapturePositive=(CheckBoxPreference)  getPreferenceManager().findPreference("checkbox_capture_positive");
         CheckBoxPreference checkCaptureNegative=(CheckBoxPreference)  getPreferenceManager().findPreference("checkbox_capture_negative");
