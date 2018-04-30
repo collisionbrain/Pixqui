@@ -76,15 +76,12 @@ public class BorderedText {
     exteriorPaint.setTypeface(typeface);
   }
 
-  public void drawText(final Canvas canvas, final float posX, final float posY, final String text) {
-    canvas.drawText(text, posX, posY, exteriorPaint);
-    canvas.drawText(text, posX, posY, interiorPaint);
-  }
+
 
   public void drawLines(Canvas canvas, final float posX, final float posY, Vector<String> lines) {
     int lineNum = 0;
     for (final String line : lines) {
-      drawText(canvas, posX, posY - getTextSize() * (lines.size() - lineNum - 1), line);
+
       ++lineNum;
     }
   }
