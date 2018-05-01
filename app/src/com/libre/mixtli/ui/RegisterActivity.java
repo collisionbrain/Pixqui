@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.libre.mixtli.DetectorActivity;
@@ -40,6 +44,8 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     private TextView mTextViewProfile;
     private Context context;
     private Pref prefs;
+    private  AlertDialog.Builder dialogError;
+    private LayoutInflater inflater;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,16 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         edtPassword = (EditText) findViewById(R.id.edtPassword);
         edtPasswordConfirm= (EditText) findViewById(R.id.edtPasswordConfirmation);
         btnRegister=(SubmitButton) findViewById(R.id.btnRegistrar);
+        dialogError = new AlertDialog.Builder(this);
+        inflater = this.getLayoutInflater();
+        dialogError.setView(inflater.inflate(R.layout.dialog_error, null))
+                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                }) ;
+        dialogError.create();
         btnRegister.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -84,6 +100,13 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
 
     @Override
     public void onClick(View v) {
+
+
+
+        // Get the layout inflater
+
+
+
         switch (v.getId()) {
 
             case R.id.btnRegistrar:
@@ -99,13 +122,20 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
                                     RegisterActivity.this.startActivity(registerIntent);
                                     RegisterActivity.this.finish();
                                 } else {
-                                    //CHECK INTERNET
-                                    //CHECK
-                                    Exception exception=task.getException();
-                                    exception.getMessage();
+                                    try {
+                                        throw task.getException();
+                                    } catch(FirebaseAuthWeakPasswordException e) {
+                                       //error_weak_password
+                                    } catch(FirebaseAuthInvalidCredentialsException e) {
+                                        //error_invalid_email
+                                    } catch(FirebaseAuthUserCollisionException e) {
 
-                                    Toast.makeText(RegisterActivity.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
+                                        dialogError.show();
+
+                                        //error_user_exists
+                                    } catch(Exception e) {
+                                        Log.e(TAG, e.getMessage());
+                                    }
                                 }
                             }
                         });
