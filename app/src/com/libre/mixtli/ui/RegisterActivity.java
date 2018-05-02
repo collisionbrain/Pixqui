@@ -2,6 +2,7 @@ package com.libre.mixtli.ui;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -44,8 +46,9 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     private TextView mTextViewProfile;
     private Context context;
     private Pref prefs;
-    private  AlertDialog.Builder dialogError;
+    private Dialog dialogError;
     private LayoutInflater inflater;
+    private   TextView messageError;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,16 +61,22 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         edtPassword = (EditText) findViewById(R.id.edtPassword);
         edtPasswordConfirm= (EditText) findViewById(R.id.edtPasswordConfirmation);
         btnRegister=(SubmitButton) findViewById(R.id.btnRegistrar);
-        dialogError = new AlertDialog.Builder(this);
-        inflater = this.getLayoutInflater();
-        dialogError.setView(inflater.inflate(R.layout.dialog_error, null))
-                .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                }) ;
-        dialogError.create();
+        dialogError = new Dialog(context);
+        dialogError.setContentView(R.layout.dialog_error);
+        Button dialogButton = (Button)dialogError .findViewById(R.id.dialogButtonOK);
+        messageError = (TextView)dialogError .findViewById(R.id.txtMensaje);
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogError.dismiss();
+
+            }
+        });
+
+
+
+
+
         btnRegister.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -102,43 +111,46 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     public void onClick(View v) {
 
 
-
-        // Get the layout inflater
-
-
-
         switch (v.getId()) {
 
             case R.id.btnRegistrar:
                 String email=edtMail.getText().toString();
                 String password=edtPassword.getText().toString();
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    prefs.saveData("REGISTER_USER_KEY",task.getResult().getUser().getUid());
-                                    Intent registerIntent = new Intent(RegisterActivity.this,DetectorActivity.class);
-                                    RegisterActivity.this.startActivity(registerIntent);
-                                    RegisterActivity.this.finish();
-                                } else {
-                                    try {
-                                        throw task.getException();
-                                    } catch(FirebaseAuthWeakPasswordException e) {
-                                       //error_weak_password
-                                    } catch(FirebaseAuthInvalidCredentialsException e) {
-                                        //error_invalid_email
-                                    } catch(FirebaseAuthUserCollisionException e) {
+                try {
+                    mAuth.createUserWithEmailAndPassword(email, password)
+                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        prefs.saveData("REGISTER_USER_KEY", task.getResult().getUser().getUid());
+                                        Intent registerIntent = new Intent(RegisterActivity.this, DetectorActivity.class);
+                                        RegisterActivity.this.startActivity(registerIntent);
+                                        RegisterActivity.this.finish();
+                                    } else {
+                                        try {
+                                            throw task.getException();
+                                        } catch (FirebaseAuthWeakPasswordException e) {
+                                            messageError.setText(e.getMessage());
+                                            dialogError.show();
+                                            //error_weak_password
+                                        } catch (FirebaseAuthInvalidCredentialsException e) {
+                                            messageError.setText(e.getMessage());
+                                            dialogError.show();
+                                            //error_invalid_email
+                                        } catch (FirebaseAuthUserCollisionException e) {
+                                            messageError.setText(e.getMessage().toString());
+                                            dialogError.show();
 
-                                        dialogError.show();
-
-                                        //error_user_exists
-                                    } catch(Exception e) {
-                                        Log.e(TAG, e.getMessage());
+                                            //error_user_exists
+                                        } catch (Exception e) {
+                                            Log.e(TAG, e.getMessage());
+                                        }
                                     }
                                 }
-                            }
-                        });
+                            });
+                }catch (Exception ex){
+                    Log.e(TAG, ex.getMessage());
+                }
 
         }
     }
