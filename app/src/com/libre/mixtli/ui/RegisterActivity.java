@@ -3,10 +3,12 @@ package com.libre.mixtli.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.GpsStatus;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -30,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
+import com.libre.mixtli.prefs.NetworkUtils;
 import com.libre.mixtli.prefs.Pref;
 import com.spark.submitbutton.SubmitButton;
 
@@ -37,7 +40,7 @@ import com.spark.submitbutton.SubmitButton;
  * Created by hgallardo on 07/03/18.
  */
 
-public class RegisterActivity  extends Activity implements View.OnClickListener {
+public class RegisterActivity  extends Activity implements  View.OnClickListener  {
     private static final String TAG = "EmailPasswordActivity";
     private EditText edtMail, edtPassword,edtName,edtPasswordConfirm;
     private SubmitButton btnRegister;
@@ -49,6 +52,8 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
     private Dialog dialogError;
     private LayoutInflater inflater;
     private   TextView messageError;
+    private int netStatus;
+    private  Button dialogButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,34 +68,13 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         btnRegister=(SubmitButton) findViewById(R.id.btnRegistrar);
         dialogError = new Dialog(context);
         dialogError.setContentView(R.layout.dialog_error);
-        Button dialogButton = (Button)dialogError .findViewById(R.id.dialogButtonOK);
+        dialogButton = (Button)dialogError .findViewById(R.id.dialogButtonOK);
         messageError = (TextView)dialogError .findViewById(R.id.txtMensaje);
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogError.dismiss();
-
-            }
-        });
-
-
-
-
-
+        dialogButton.setOnClickListener(dialogListener);
+        netStatus= NetworkUtils.getConnectivityStatus(context);
         btnRegister.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null) {
-                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
-                } else {
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
-                }
-                //updateUI(user);
-            }
-        };
+
     }
 
     @Override
@@ -114,42 +98,49 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
         switch (v.getId()) {
 
             case R.id.btnRegistrar:
-                String email=edtMail.getText().toString();
-                String password=edtPassword.getText().toString();
-                try {
-                    mAuth.createUserWithEmailAndPassword(email, password)
-                            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if (task.isSuccessful()) {
-                                        prefs.saveData("REGISTER_USER_KEY", task.getResult().getUser().getUid());
-                                        Intent registerIntent = new Intent(RegisterActivity.this, DetectorActivity.class);
-                                        RegisterActivity.this.startActivity(registerIntent);
-                                        RegisterActivity.this.finish();
-                                    } else {
-                                        try {
-                                            throw task.getException();
-                                        } catch (FirebaseAuthWeakPasswordException e) {
-                                            messageError.setText(e.getMessage());
-                                            dialogError.show();
-                                            //error_weak_password
-                                        } catch (FirebaseAuthInvalidCredentialsException e) {
-                                            messageError.setText(e.getMessage());
-                                            dialogError.show();
-                                            //error_invalid_email
-                                        } catch (FirebaseAuthUserCollisionException e) {
-                                            messageError.setText(e.getMessage().toString());
-                                            dialogError.show();
 
-                                            //error_user_exists
-                                        } catch (Exception e) {
-                                            Log.e(TAG, e.getMessage());
+                if (netStatus != 0) {
+                    if(validateForm()){
+                        try {
+                            String email = edtMail.getText().toString();
+                            String password = edtPassword.getText().toString();
+                            mAuth.createUserWithEmailAndPassword(email, password)
+                                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
+                                            if (task.isSuccessful()) {
+                                                prefs.saveData("REGISTER_USER_KEY", task.getResult().getUser().getUid());
+                                                Intent registerIntent = new Intent(RegisterActivity.this, DetectorActivity.class);
+                                                RegisterActivity.this.startActivity(registerIntent);
+                                                RegisterActivity.this.finish();
+                                            } else
+                                                {
+                                                try {
+                                                    throw task.getException();
+                                                } catch (FirebaseAuthWeakPasswordException e) {
+                                                    setErrorMessage(e.getMessage());
+
+                                                } catch (FirebaseAuthInvalidCredentialsException e) {
+                                                    setErrorMessage(e.getMessage());
+
+                                                } catch (FirebaseAuthUserCollisionException e) {
+                                                    setErrorMessage(e.getMessage().toString());
+
+                                                } catch (Exception e) {
+                                                    Log.e(TAG, e.getMessage());
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                            });
-                }catch (Exception ex){
-                    Log.e(TAG, ex.getMessage());
+                                    });
+                    } catch (Exception ex) {
+                        Log.e(TAG, ex.getMessage());
+                    }
+                }
+            }else
+                {
+                    messageError.setText("Verifica tu conexion");
+                    dialogError.show();
+
                 }
 
         }
@@ -158,25 +149,38 @@ public class RegisterActivity  extends Activity implements View.OnClickListener 
 
     private boolean validateForm() {
         if (TextUtils.isEmpty(edtMail.getText().toString())) {
-            //mLayoutEmail.setError("Required.");
+            edtMail.requestFocus();
+            setErrorMessage("Correo no puede ir Vacio");
             return false;
         } else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
-            // mLayoutPassword.setError("Required.");
+            edtPassword.requestFocus();
+            setErrorMessage("Contraseña no puede ir Vacio");
             return false;
         } else if (!edtPassword.getText().toString().equals(edtPasswordConfirm.getText().toString())) {
-            //mLayoutName.setError("Required.");
+            edtPassword.requestFocus();
+            setErrorMessage("Cofirma tu contraseña");
             return false;
         } else if (TextUtils.isEmpty(edtName.getText().toString())) {
-            //mLayoutName.setError("Required.");
+            edtName.requestFocus();
+            setErrorMessage("Tu Nombre no puede ir Vacio");
             return false;
         } else {
-            //mLayoutEmail.setError(null);
-            //mLayoutPassword.setError(null);
+
             return true;
         }
     }
+    View.OnClickListener dialogListener=new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        dialogError.dismiss();
+
+        }
+    };
 
 
-
+    public void setErrorMessage(String message){
+        messageError.setText(message);
+        dialogError.show();
+    }
 
 }
