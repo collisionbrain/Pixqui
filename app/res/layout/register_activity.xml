@@ -24,8 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="29sp"
-            android:textColor="@color/black"
-
+            android:textColor="@color/gray"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
             android:text="Crear cuenta"
@@ -121,20 +120,28 @@
                 android:textColorHint="@color/gray"
                 android:singleLine="true" />
         </RelativeLayout>
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="10"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:weightSum="100">
             <TextView
-                android:layout_width="match_parent"
+                android:id="@+id/txtPrivacidad"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blueButtonsText"
-                android:text="Ver Aviso de Privacidad"/>
+                android:layout_weight="90"
+                android:textColor="@color/blueBorders"
+                android:text="Terminos y Condiciones"/>
+            <CheckBox
+                android:id="@+id/checkPrivacy"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="10" />
 
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llyBoton"

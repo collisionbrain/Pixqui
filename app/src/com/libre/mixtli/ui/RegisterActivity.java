@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,17 +44,19 @@ import com.spark.submitbutton.SubmitButton;
 public class RegisterActivity  extends Activity implements  View.OnClickListener  {
     private static final String TAG = "EmailPasswordActivity";
     private EditText edtMail, edtPassword,edtName,edtPasswordConfirm;
+    private TextView txtPrivacidad;
     private SubmitButton btnRegister;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private TextView mTextViewProfile;
     private Context context;
     private Pref prefs;
-    private Dialog dialogError;
+    private Dialog dialogError,dialogPrivacy;
     private LayoutInflater inflater;
     private   TextView messageError;
     private int netStatus;
     private  Button dialogButton;
+    private CheckBox checkPrivacy;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,12 +68,17 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
         edtName = (EditText) findViewById(R.id.edtNombre);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
         edtPasswordConfirm= (EditText) findViewById(R.id.edtPasswordConfirmation);
+        txtPrivacidad= (TextView) findViewById(R.id.txtPrivacidad);
         btnRegister=(SubmitButton) findViewById(R.id.btnRegistrar);
+        checkPrivacy=(CheckBox) findViewById(R.id.checkPrivacy);
         dialogError = new Dialog(context);
+        dialogPrivacy= new Dialog(context);
+        dialogPrivacy.setContentView(R.layout.dialog_privacy);
         dialogError.setContentView(R.layout.dialog_error);
         dialogButton = (Button)dialogError .findViewById(R.id.dialogButtonOK);
         messageError = (TextView)dialogError .findViewById(R.id.txtMensaje);
         dialogButton.setOnClickListener(dialogListener);
+        txtPrivacidad.setOnClickListener(dialogPrivacyListener);
         netStatus= NetworkUtils.getConnectivityStatus(context);
         btnRegister.setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
@@ -100,7 +108,8 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
             case R.id.btnRegistrar:
 
                 if (netStatus != 0) {
-                    if(validateForm()){
+                    if(validateForm()) {
+                        if(checkPrivacy.isChecked()){
                         try {
                             String email = edtMail.getText().toString();
                             String password = edtPassword.getText().toString();
@@ -113,8 +122,7 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
                                                 Intent registerIntent = new Intent(RegisterActivity.this, DetectorActivity.class);
                                                 RegisterActivity.this.startActivity(registerIntent);
                                                 RegisterActivity.this.finish();
-                                            } else
-                                                {
+                                            } else {
                                                 try {
                                                     throw task.getException();
                                                 } catch (FirebaseAuthWeakPasswordException e) {
@@ -132,9 +140,13 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
                                             }
                                         }
                                     });
-                    } catch (Exception ex) {
-                        Log.e(TAG, ex.getMessage());
-                    }
+                        } catch (Exception ex) {
+                            Log.e(TAG, ex.getMessage());
+                        }
+                    }else{
+                            messageError.setText("Acepta los Terminos y Condiciones");
+                            dialogError.show();
+                        }
                 }
             }else
                 {
@@ -177,7 +189,13 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
         }
     };
 
+    View.OnClickListener dialogPrivacyListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            dialogPrivacy.show();
 
+        }
+    };
     public void setErrorMessage(String message){
         messageError.setText(message);
         dialogError.show();
