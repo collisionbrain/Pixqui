@@ -50,8 +50,7 @@ import android.widget.Toast;
 import com.libre.mixtli.R;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
-import com.spark.submitbutton.SubmitButton;
-
+import com.unstoppable.submitbuttonview.SubmitButton;
 import java.nio.ByteBuffer;
 
 public abstract class CameraActivity extends Activity

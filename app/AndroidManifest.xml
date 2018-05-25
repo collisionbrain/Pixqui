@@ -48,7 +48,7 @@
             android:screenOrientation="portrait">
         </activity>
 
-        <receiver android:name=".ui.RegisterActivity" />
+
     </application>
 
 </manifest>

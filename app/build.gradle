@@ -52,7 +52,7 @@ project.ext.TMP_DIR   = project.buildDir.toString() + '/downloads'
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 24
     buildToolsVersion '26.0.2'
 
 
@@ -83,11 +83,12 @@ android {
 
 
 dependencies {
+    compile 'com.android.support:appcompat-v7:24.0.0'
     compile 'org.tensorflow:tensorflow-android:1.4.0'
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.google.firebase:firebase-storage:11.8.0'
-    compile 'me.spark:submitbutton:1.0.1'
+    compile 'com.unstoppable:submitbutton:1.1.3'
 
 
 }

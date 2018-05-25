@@ -4,7 +4,6 @@
     android:layout_height="200dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="10dp"
-    android:background="@drawable/border_error"
     android:layout_gravity="center"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
@@ -12,24 +11,20 @@
         android:id="@+id/txtMensaje"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:paddingTop="10dp"
+        android:textSize="20sp"
         android:gravity="center"
         android:text="Mensaje de Error"/>
 
-    <com.spark.submitbutton.SubmitButton
-        android:id="@+id/btnRegistrar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Aceptar"
-        android:layout_centerInParent="true"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/redDoqi"
-        app:sub_btn_background="@color/white"
-        app:sub_btn_duration="0"
-        app:sub_btn_line_color="@color/redDoqi"
-        app:sub_btn_ripple_color="@color/redDoqi"
-        app:sub_btn_tick_color="@color/white"
-        />
 
+    <com.unstoppable.submitbuttonview.SubmitButton
+        android:id="@+id/dialogButtonOK"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        app:buttonText="Aceptar"
+        app:buttonTextSize="25sp"
+        app:buttonColor="@color/redDoqi"
+        />
 </RelativeLayout>
