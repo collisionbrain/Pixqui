@@ -24,19 +24,13 @@
         android:layout_weight="60"
         android:text="Lorem ipsum dolor sit amet consectetur adipiscing elit dis, tristique venenatis velit imperdiet molestie per ut felis nunc, tincidunt sem pellentesque magna arcu placerat primis. Sagittis netus augue vulputate curae est nullam cursus vestibulum dictum dui, ridiculus velit sapien vehicula interdum proin tristique lectus blandit, montes taciti posuere facilisis erat habitant leo sociosqu sem. Placerat dis ullamcorper accumsan fusce feugiat nec dapibus iaculis, diam pellentesque sagittis mollis odio ac mauris, magna id ut risus erat a in."/>
 
-    <com.spark.submitbutton.SubmitButton
+    <com.unstoppable.submitbuttonview.SubmitButton
         android:id="@+id/btnAceptar"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="20"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Acepto"
-        android:textColor="@color/gray"
-        app:sub_btn_background="@color/white"
-        app:sub_btn_duration="3000"
-        app:sub_btn_line_color="@color/blueBorders"
-        app:sub_btn_ripple_color="@color/blueBorders"
-        app:sub_btn_tick_color="@color/white"
-        />
+        app:buttonText="Acepto"
+        app:buttonTextSize="25sp"
+        app:buttonColor="@color/blueBorders" />
 
 </LinearLayout>

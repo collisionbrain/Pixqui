@@ -57,17 +57,13 @@
                 android:layout_weight="50"
                 android:layout_height="match_parent"
                 android:gravity="center" >
-                <com.spark.submitbutton.SubmitButton
+                <com.unstoppable.submitbuttonview.SubmitButton
                     android:id="@+id/btnDemo"
-                    android:layout_width="900dp"
-                    android:layout_height="match_parent"
-                    android:text="Ver Demo"
-                    android:textColor="@color/gray"
-                    app:sub_btn_background="@color/white"
-                    app:sub_btn_duration="3000"
-                    app:sub_btn_line_color="@color/blueBorders"
-                    app:sub_btn_ripple_color="@color/blueBorders"
-                    app:sub_btn_tick_color="@color/white" />
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    app:buttonText="Ver Demo"
+                    app:buttonTextSize="25sp"
+                    app:buttonColor="@color/blueBorders" />
 
             </RelativeLayout>
             <RelativeLayout
@@ -75,18 +71,13 @@
                 android:layout_weight="50"
                 android:layout_height="match_parent"
                 android:gravity="center">
-                <com.spark.submitbutton.SubmitButton
+                <com.unstoppable.submitbuttonview.SubmitButton
                     android:id="@+id/btnInicar"
-                    android:layout_width="900dp"
-                    android:layout_height="match_parent"
-                    android:text="Iniciar "
-                    android:textColor="@color/gray"
-                    app:sub_btn_background="@color/white"
-                    app:sub_btn_duration="3000"
-                    app:sub_btn_line_color="@color/blueBorders"
-                    app:sub_btn_ripple_color="@color/blueBorders"
-                    app:sub_btn_tick_color="@color/white" />
-
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    app:buttonText="Iniciar"
+                    app:buttonTextSize="25sp"
+                    app:buttonColor="@color/blueBorders" />
             </RelativeLayout>
         </LinearLayout>
 

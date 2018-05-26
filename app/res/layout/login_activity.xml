@@ -27,7 +27,7 @@
             android:textColor="@color/gray"
             android:layout_alignParentBottom="true"
             android:layout_centerInParent="true"
-            android:text="Crear cuenta"
+            android:text="Bienvenido"
             />
     </RelativeLayout>
 
@@ -39,28 +39,7 @@
         android:weightSum="100"
         android:gravity="center">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="15"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal" >
 
-            <EditText
-                android:id="@+id/edtNombre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/gray"
-                android:background="@drawable/editext_line"
-                android:inputType="textCapWords|textNoSuggestions"
-                android:singleLine="true"
-                android:hint="@string/strNombre"
-                android:textColorHint="@color/gray"
-                android:text="Hugo Miguel Gallardo Arvizu"
-                />
-
-        </RelativeLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -103,46 +82,8 @@
             android:singleLine="true" />
     </RelativeLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:weightSum="100">
-            <TextView
-                android:id="@+id/txtPrivacidad"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="90"
-                android:textColor="@color/blueBorders"
-                android:text="Terminos y Condiciones"/>
-            <CheckBox
-                android:id="@+id/checkPrivacy"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="10" />
 
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:weightSum="100">
-            <TextView
-                android:id="@+id/txtTengoCuenta"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="90"
-                android:textStyle="bold|italic"
-                android:textColor="@color/blueBorders"
-                android:text="Ya tengo cuenta"/>
 
-        </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/llyBoton"
@@ -154,11 +95,11 @@
         android:gravity="center">
 
         <com.unstoppable.submitbuttonview.SubmitButton
-            android:id="@+id/btnRegistrar"
+            android:id="@+id/btnEntrar"
             android:layout_width="220dp"
             android:layout_height="match_parent"
             android:padding="25dp"
-            app:buttonText="Registrar"
+            app:buttonText="Entrar"
             app:buttonTextSize="25sp"
             app:buttonColor="@color/blueBorders"
             />

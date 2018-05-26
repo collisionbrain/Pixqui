@@ -23,19 +23,26 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
+import com.libre.mixtli.env.Constants;
 import com.libre.mixtli.prefs.NetworkUtils;
 import com.libre.mixtli.prefs.Pref;
-import com.spark.submitbutton.SubmitButton;
+import com.libre.mixtli.prefs.Utils;
+import com.unstoppable.submitbuttonview.SubmitButton;
+
+import static com.libre.mixtli.env.Constants.FACE_XML;
+import static com.libre.mixtli.env.Constants.URL;
 
 /**
  * Created by hgallardo on 07/03/18.
@@ -48,15 +55,18 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
     private SubmitButton btnRegister;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private TextView mTextViewProfile;
+    private TextView mTextViewProfile,txtTengoCuenta;
     private Context context;
     private Pref prefs;
     private Dialog dialogError,dialogPrivacy;
-    private LayoutInflater inflater;
     private   TextView messageError;
     private int netStatus;
-    private  Button dialogButton;
+    private  SubmitButton dialogButton;
     private CheckBox checkPrivacy;
+    private boolean registerSuccess;
+    private String userGuid;
+    private  FirebaseStorage storage;
+    final long ONE_MEGABYTE = 1024 * 1024;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,7 +77,7 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
         edtMail =(EditText) findViewById(R.id.edtCorreo);
         edtName = (EditText) findViewById(R.id.edtNombre);
         edtPassword = (EditText) findViewById(R.id.edtPassword);
-        edtPasswordConfirm= (EditText) findViewById(R.id.edtPasswordConfirmation);
+        txtTengoCuenta= (TextView) findViewById(R.id.txtTengoCuenta);
         txtPrivacidad= (TextView) findViewById(R.id.txtPrivacidad);
         btnRegister=(SubmitButton) findViewById(R.id.btnRegistrar);
         checkPrivacy=(CheckBox) findViewById(R.id.checkPrivacy);
@@ -75,28 +85,29 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
         dialogPrivacy= new Dialog(context);
         dialogPrivacy.setContentView(R.layout.dialog_privacy);
         dialogError.setContentView(R.layout.dialog_error);
-        dialogButton = (Button)dialogError .findViewById(R.id.dialogButtonOK);
+        dialogButton = (SubmitButton)dialogError .findViewById(R.id.dialogButtonOK);
         messageError = (TextView)dialogError .findViewById(R.id.txtMensaje);
         dialogButton.setOnClickListener(dialogListener);
         txtPrivacidad.setOnClickListener(dialogPrivacyListener);
+        txtTengoCuenta.setOnClickListener(loginListener);
         netStatus= NetworkUtils.getConnectivityStatus(context);
         btnRegister.setOnClickListener(this);
+
+        btnRegister.setOnResultEndListener(finishListener);
         mAuth = FirebaseAuth.getInstance();
+        storage=FirebaseStorage.getInstance();
 
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (mAuthListener != null) {
-            mAuth.removeAuthStateListener(mAuthListener);
-        }
     }
 
     @Override
@@ -118,20 +129,48 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
                                         @Override
                                         public void onComplete(@NonNull Task<AuthResult> task) {
                                             if (task.isSuccessful()) {
-                                                prefs.saveData("REGISTER_USER_KEY", task.getResult().getUser().getUid());
-                                                Intent registerIntent = new Intent(RegisterActivity.this, DetectorActivity.class);
-                                                RegisterActivity.this.startActivity(registerIntent);
-                                                RegisterActivity.this.finish();
+                                                btnRegister.doResult(true);
+                                                registerSuccess=true;
+                                                userGuid=task.getResult().getUser().getUid();
+                                                StorageReference fileRef = storage.getReferenceFromUrl(URL).child(FACE_XML);
+                                                if (fileRef != null) {
+                                                    fileRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                        @Override
+                                                        public void onSuccess(byte[] bytes) {
+                                                            Utils.saveXml(bytes);
+                                                            btnRegister.doResult(true);
+                                                            registerSuccess=true;
+
+
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception exception) {
+                                                            btnRegister.doResult(false);
+                                                            registerSuccess=false;
+                                                        }
+                                                    });
+                                                } else {
+                                                    btnRegister.doResult(false);
+                                                    registerSuccess=false;
+                                                }
+
                                             } else {
                                                 try {
                                                     throw task.getException();
                                                 } catch (FirebaseAuthWeakPasswordException e) {
+                                                    btnRegister.doResult(false);
+                                                    registerSuccess=false;
                                                     setErrorMessage(e.getMessage());
 
                                                 } catch (FirebaseAuthInvalidCredentialsException e) {
+                                                    btnRegister.doResult(false);
+                                                    registerSuccess=false;
                                                     setErrorMessage(e.getMessage());
 
                                                 } catch (FirebaseAuthUserCollisionException e) {
+                                                    btnRegister.doResult(false);
+                                                    registerSuccess=false;
                                                     setErrorMessage(e.getMessage().toString());
 
                                                 } catch (Exception e) {
@@ -146,12 +185,16 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
                     }else{
                             messageError.setText("Acepta los Terminos y Condiciones");
                             dialogError.show();
+                            btnRegister.doResult(false);
+                            registerSuccess=false;
                         }
                 }
             }else
                 {
                     messageError.setText("Verifica tu conexion");
                     dialogError.show();
+                    btnRegister.doResult(false);
+                    registerSuccess=false;
 
                 }
 
@@ -162,18 +205,20 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
     private boolean validateForm() {
         if (TextUtils.isEmpty(edtMail.getText().toString())) {
             edtMail.requestFocus();
+            btnRegister.doResult(false);
+            registerSuccess=false;
             setErrorMessage("Correo no puede ir Vacio");
             return false;
         } else if (TextUtils.isEmpty(edtPassword.getText().toString())) {
             edtPassword.requestFocus();
+            btnRegister.doResult(false);
+            registerSuccess=false;
             setErrorMessage("Contraseña no puede ir Vacio");
-            return false;
-        } else if (!edtPassword.getText().toString().equals(edtPasswordConfirm.getText().toString())) {
-            edtPassword.requestFocus();
-            setErrorMessage("Cofirma tu contraseña");
             return false;
         } else if (TextUtils.isEmpty(edtName.getText().toString())) {
             edtName.requestFocus();
+            btnRegister.doResult(false);
+            registerSuccess=false;
             setErrorMessage("Tu Nombre no puede ir Vacio");
             return false;
         } else {
@@ -181,11 +226,22 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
             return true;
         }
     }
+
+    View.OnClickListener loginListener=new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent registerIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+            RegisterActivity.this.startActivity(registerIntent);
+            RegisterActivity.this.finish();
+
+        }
+    };
     View.OnClickListener dialogListener=new View.OnClickListener() {
     @Override
     public void onClick(View v) {
         dialogError.dismiss();
-
+        btnRegister.reset();
+        dialogButton.reset();
         }
     };
 
@@ -200,5 +256,22 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
         messageError.setText(message);
         dialogError.show();
     }
+    SubmitButton.OnResultEndListener finishListener=new SubmitButton.OnResultEndListener() {
+        @Override
+        public void onResultEnd() {
+            if(registerSuccess) {
+
+                prefs.saveData("REGISTER_USER_KEY", userGuid);
+                Intent registerIntent = new Intent(RegisterActivity.this, DetectorActivity.class);
+                RegisterActivity.this.startActivity(registerIntent);
+                RegisterActivity.this.finish();
+
+            }else{
+                setErrorMessage("Error descargando archivos extras");
+
+            }
+        }
+    };
+
 
 }

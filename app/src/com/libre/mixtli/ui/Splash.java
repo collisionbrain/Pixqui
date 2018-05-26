@@ -4,17 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.content.ContextCompat;
-import android.view.Gravity;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
-
-import com.libre.mixtli.CameraActivity;
 import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
 import com.libre.mixtli.prefs.Pref;
-import com.libre.mixtli.ui.animations.DotProgressBar;
-import com.libre.mixtli.ui.animations.DotProgressBarBuilder;
+import com.libre.mixtli.prefs.Utils;
+
+import static com.libre.mixtli.env.Constants.pixquiExternalData;
 
 /**
  * Created by hgallardo on 10/03/18.
@@ -31,6 +26,7 @@ public class Splash extends Activity {
         setContentView(R.layout.splash_screen);
         this.prefs=new Pref(this);
         prefs.saveData(ID_CAMERA_PREFERENCE,"0");
+        Utils.createDirs(pixquiExternalData);
         new Handler().postDelayed(new Runnable(){
                 @Override
                 public void run() {

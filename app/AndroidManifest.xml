@@ -47,8 +47,10 @@
         <activity android:name="com.libre.mixtli.ui.RegisterActivity"
             android:screenOrientation="portrait">
         </activity>
+        <activity android:name="com.libre.mixtli.ui.LoginActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
-        <receiver android:name=".ui.RegisterActivity" />
     </application>
 
 </manifest>
