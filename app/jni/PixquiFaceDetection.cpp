@@ -10,6 +10,7 @@
 #include <opencv2/objdetect.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/object_tracking.hpp>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -29,7 +30,7 @@
 using namespace std;
 using namespace cv;
 
-void detect ( Mat& img)
+vector<Rect> detect ( Mat& img)
  {
      double t = 0;
      double scale;
@@ -38,8 +39,6 @@ void detect ( Mat& img)
 
      CascadeClassifier cascade;
      cascade.load(faceFile);
-
-     CascadeClassifier& nestedCascade,
 
      vector<Rect> faces, faces2;
      const static Scalar colors[] =
@@ -81,42 +80,18 @@ void detect ( Mat& img)
              faces.push_back(Rect(smallImg.cols - r->x - r->width, r->y, r->width, r->height));
          }
      }
-     t = (double)getTickCount() - t;
-     printf( "detection time = %g ms\n", t*1000/getTickFrequency());
-     for ( size_t i = 0; i < faces.size(); i++ )
-     {
-         Rect r = faces[i];
-         Mat smallImgROI;
-         vector<Rect> nestedObjects;
-         Point center;
-         Scalar color = colors[i%8];
-         int radius;
 
-         double aspect_ratio = (double)r.width/r.height;
-         if( 0.75 < aspect_ratio && aspect_ratio < 1.3 )
-         {
-             center.x = cvRound((r.x + r.width*0.5)*scale);
-             center.y = cvRound((r.y + r.height*0.5)*scale);
-             radius = cvRound((r.width + r.height)*0.25*scale);
-             circle( img, center, radius, color, 3, 8, 0 );
-         }
-         else
-             rectangle( img, cvPoint(cvRound(r.x*scale), cvRound(r.y*scale)),
-                        cvPoint(cvRound((r.x + r.width-1)*scale), cvRound((r.y + r.height-1)*scale)),
-                        color, 3, 8, 0);
+    return faces;
 
-     }
-     retturn img;
-     //imshow( "result", img );
  }
 
 JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
-        (JNIEnv *, jclass,jlong imageMat, jlong squareMat)
+        (JNIEnv *, jclass,jlong imageMat, jlong founded)
 {
     LOGD("STARTING PROCESS ");
     Mat& imgMat=*((Mat*)imageMat);
-    vector<Point> founded = detect(imgMat);
-   *((Mat*)squareMat) = Mat(founded, true);
+   // vector<Rect> founded = detect(imgMat);
+   //*((Mat*)squareMat) = Mat(founded, true);
 
 }
 
