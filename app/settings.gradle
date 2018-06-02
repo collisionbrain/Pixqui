@@ -1,1 +1,1 @@
-include ':opencv'
+include ':opencv', ':osmdroid-android-4.3', ':osmbonuspack_v5.1'

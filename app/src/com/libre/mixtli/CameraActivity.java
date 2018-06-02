@@ -19,6 +19,8 @@ package com.libre.mixtli;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
@@ -50,6 +52,7 @@ import android.widget.Toast;
 import com.libre.mixtli.R;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
+import com.libre.mixtli.ui.MapMaskFragment;
 import com.unstoppable.submitbuttonview.SubmitButton;
 import java.nio.ByteBuffer;
 
@@ -63,7 +66,9 @@ public abstract class CameraActivity extends Activity
   private static final String PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
   private boolean debug = false;
-
+  private FragmentManager fragmentManager;
+  private Fragment mapFreagment;
+  private FragmentTransaction fragmentTransaction;
   private Handler handler;
   private HandlerThread handlerThread;
   private boolean useCamera2API;
@@ -96,6 +101,7 @@ public abstract class CameraActivity extends Activity
     btnDemo=(SubmitButton) findViewById(R.id.btnDemo);
     btnDemo.setOnClickListener(demoListener);
     btnInicio=(SubmitButton) findViewById(R.id.btnInicar);
+    btnInicio.setOnClickListener(startListener);
     btnSettings=(ImageView) findViewById(R.id.btnSettings);
     lytPrincipal=(LinearLayout) findViewById(R.id.lytPrincipal);
     lytDemo=(LinearLayout) findViewById(R.id.lytDemo);
@@ -501,4 +507,20 @@ public abstract class CameraActivity extends Activity
       lytDemo.setVisibility(View.VISIBLE);
     }
   };
+
+  View.OnClickListener startListener=new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+       setMask();
+    }
+  };
+  public void setMask(){
+    lytPrincipal.setVisibility(View.GONE);
+    btnDemo.setVisibility(View.GONE);
+    btnInicio.setVisibility(View.GONE);
+    getFragmentManager()
+            .beginTransaction()
+            .replace(R.id.container_mask, new MapMaskFragment())
+            .commit();
+  }
 }
