@@ -48,7 +48,6 @@
  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/imgcodecs/imgcodecs_c.h \
  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/videoio/videoio_c.h \
  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/imgproc.hpp \
- /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/object_tracking.hpp \
  /home/hugo/Android/Ndk/android-ndk/sources/cxx-stl/gnu-libstdc++/4.9/include/iostream
 
 /home/hugo/Pixqui/app/jni/PixquiFaceDetection.h:
@@ -146,7 +145,5 @@
 /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/videoio/videoio_c.h:
 
 /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/imgproc.hpp:
-
-/home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/object_tracking.hpp:
 
 /home/hugo/Android/Ndk/android-ndk/sources/cxx-stl/gnu-libstdc++/4.9/include/iostream:

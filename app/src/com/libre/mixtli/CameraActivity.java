@@ -67,7 +67,6 @@ public abstract class CameraActivity extends Activity
 
   private boolean debug = false;
   private FragmentManager fragmentManager;
-  private Fragment mapFreagment;
   private FragmentTransaction fragmentTransaction;
   private Handler handler;
   private HandlerThread handlerThread;
@@ -90,13 +89,14 @@ public abstract class CameraActivity extends Activity
   private ImageView gunOn,gunOff;
   private boolean startDemo=false;
   final Animation animation = new AlphaAnimation((float) 0.5, 0);
-
+  final private Fragment fragmentMap=new MapMaskFragment();
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
     super.onCreate(null);
     getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
+    fragmentManager=getFragmentManager();
+    fragmentTransaction=fragmentManager.beginTransaction();
     setContentView(R.layout.activity_camera);
     btnDemo=(SubmitButton) findViewById(R.id.btnDemo);
     btnDemo.setOnClickListener(demoListener);
@@ -119,6 +119,20 @@ public abstract class CameraActivity extends Activity
     }
   }
 
+  @Override
+  public void onBackPressed(){
+
+    //super.onBackPressed();
+    if(fragmentMap.isVisible()) {
+      Toast.makeText(getApplicationContext(), " Press Back again to Exit ", Toast.LENGTH_SHORT).show();
+      fragmentTransaction = fragmentManager.beginTransaction();
+      fragmentTransaction.remove(fragmentMap).commit();
+    }else {
+      setPrincipal();
+    }
+
+
+  }
   private byte[] lastPreviewFrame;
 
   protected int[] getRgbBytes() {
@@ -501,10 +515,7 @@ public abstract class CameraActivity extends Activity
   View.OnClickListener demoListener=new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-      lytPrincipal.setVisibility(View.GONE);
-      startDemo=true;
-      processImage();
-      lytDemo.setVisibility(View.VISIBLE);
+      setDemoView();
     }
   };
 
@@ -515,12 +526,29 @@ public abstract class CameraActivity extends Activity
     }
   };
   public void setMask(){
-    lytPrincipal.setVisibility(View.GONE);
-    btnDemo.setVisibility(View.GONE);
-    btnInicio.setVisibility(View.GONE);
-    getFragmentManager()
-            .beginTransaction()
-            .replace(R.id.container_mask, new MapMaskFragment())
+    setDemoView();
+    gunOn.setVisibility(View.INVISIBLE);
+    gunOff.setVisibility(View.INVISIBLE);
+    fragmentTransaction
+            .replace(R.id.container_mask,fragmentMap)
             .commit();
   }
+  private void setDemoView(){
+    lytPrincipal.setVisibility(View.GONE);
+    startDemo=true;
+    processImage();
+    lytDemo.setVisibility(View.VISIBLE);
+  }
+  private void setPrincipal(){
+    lytPrincipal.setVisibility(View.VISIBLE);
+    gunOn.setVisibility(View.INVISIBLE);
+    gunOff.setVisibility(View.VISIBLE);
+    btnDemo.reset();
+    btnInicio.reset();
+    startDemo=false;
+    processImage();
+    lytDemo.setVisibility(View.GONE);
+  }
+
+
 }

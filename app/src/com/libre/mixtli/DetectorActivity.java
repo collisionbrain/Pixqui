@@ -30,25 +30,33 @@ import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.libre.mixtli.OverlayView.DrawCallback;
 import com.libre.mixtli.R;
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
 import com.libre.mixtli.prefs.Pref;
-import com.libre.mixtli.task.ReportEventService;
 import com.libre.mixtli.tracking.MultiBoxTracker;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
-
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
  * objects.
@@ -62,9 +70,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
       "file:///android_asset/tensorflow_inception_graph.pb";
   private static final String TF_OD_API_LABELS_FILE = "file:///android_asset/imagenet_comp_graph_label_strings.txt";
 
-  // Which detection model to use: by default uses Tensorflow Object Detection API frozen
-  // checkpoints.  Optionally use legacy Multibox (trained using an older version of the API)
-  // or YOLO.
   private enum DetectorMode {
     TF_OD_API, MULTIBOX, YOLO;
   }
@@ -105,12 +110,25 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private Context context;
   private CameraActivity activity ;
 
+  private FirebaseStorage firebaseStorage ;
+  private StorageReference storageRef ;
+  private StorageReference uploadeRef;
+  private String user_key;
+  private SimpleDateFormat simpleDateFormat;
+  private Calendar calendar ;
+  private Date now ;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
     super.onCreate(null);
     context=this;
+    prefs=new Pref(context);
+    firebaseStorage = FirebaseStorage.getInstance();
+    storageRef = firebaseStorage.getReference();
+    user_key=prefs.loadData("REGISTER_USER_KEY");
+    simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    calendar = Calendar.getInstance();
   }
 
   @Override
@@ -283,9 +301,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             for (final Classifier.Recognition result : results) {
                final RectF location = result.getLocation();
               if (location != null && result.getConfidence() >= minimumConfidence) {
-                //Toast.makeText(DetectorActivity.this,"Pistola:" +result.getConfidence().toString() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetectorActivity.this,"Pistola:" +result.getConfidence().toString() , Toast.LENGTH_SHORT).show();
                 activity.setGunAllert();
-                canvas.drawRect(location, paint);
+                reportEventService(byteArrayToUpload);
+                //canvas.drawRect(location, paint);
                 cropToFrameTransform.mapRect(location);
 
                 result.setLocation(location);
@@ -304,13 +323,23 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
 
   private  void reportEventService(final byte [] bytes){
-
-
-    prefs=new Pref(this);
-    Intent msgIntent = new Intent(DetectorActivity.this, ReportEventService.class);
-    msgIntent.putExtra("byteBmp", bytes);
-    msgIntent.putExtra("idUser",prefs.loadData("REGISTER_USER_KEY"));
-    startService(msgIntent);
+     now = calendar.getTime();
+    String timestamp = simpleDateFormat.format(now);
+    firebaseStorage = FirebaseStorage.getInstance();
+    storageRef = firebaseStorage.getReference();
+    uploadeRef = storageRef.child(user_key+"/"+timestamp.concat(".jpg"));
+    UploadTask uploadTask = uploadeRef.putBytes(bytes);
+    uploadTask.addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception exception) {
+       Log.e("***********",exception.getMessage().toString());
+      }
+    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+      @Override
+      public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        Log.e("***** TRANSFER :"," "+taskSnapshot.getBytesTransferred());
+      }
+    });
   }
 
   @Override
