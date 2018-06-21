@@ -37,6 +37,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
+import android.support.v4.app.ActivityCompat;
 import android.util.Size;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -57,13 +58,18 @@ import com.unstoppable.submitbuttonview.SubmitButton;
 import java.nio.ByteBuffer;
 
 public abstract class CameraActivity extends Activity
-    implements OnImageAvailableListener, Camera.PreviewCallback {
+    implements OnImageAvailableListener, Camera.PreviewCallback,ActivityCompat.OnRequestPermissionsResultCallback {
   private static final Logger LOGGER = new Logger();
 
   private static final int PERMISSIONS_REQUEST = 1;
 
   private static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
   private static final String PERMISSION_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+  private static final String PERMISSION_WIFI_STATE = Manifest.permission.ACCESS_WIFI_STATE;
+  private static final String PERMISSION_NETWORK_STATE = Manifest.permission.ACCESS_NETWORK_STATE;
+  private static final String PERMISSION_FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
+  private static final String PERMISSION_COARSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
+
 
   private boolean debug = false;
   private FragmentManager fragmentManager;
@@ -326,7 +332,12 @@ public abstract class CameraActivity extends Activity
     if (requestCode == PERMISSIONS_REQUEST) {
       if (grantResults.length > 0
           && grantResults[0] == PackageManager.PERMISSION_GRANTED
-          && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+          && grantResults[1] == PackageManager.PERMISSION_GRANTED
+          && grantResults[2] == PackageManager.PERMISSION_GRANTED
+          && grantResults[3] == PackageManager.PERMISSION_GRANTED
+          && grantResults[4] == PackageManager.PERMISSION_GRANTED
+          && grantResults[5] == PackageManager.PERMISSION_GRANTED
+              ) {
         setFragment();
       } else {
         requestPermission();
@@ -336,8 +347,12 @@ public abstract class CameraActivity extends Activity
 
   private boolean hasPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      return checkSelfPermission(PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED &&
-          checkSelfPermission(PERMISSION_STORAGE) == PackageManager.PERMISSION_GRANTED;
+      return  checkSelfPermission(PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED &&
+              checkSelfPermission(PERMISSION_STORAGE) == PackageManager.PERMISSION_GRANTED&&
+              checkSelfPermission(PERMISSION_WIFI_STATE) == PackageManager.PERMISSION_GRANTED&&
+              checkSelfPermission(PERMISSION_NETWORK_STATE) == PackageManager.PERMISSION_GRANTED&&
+              checkSelfPermission(PERMISSION_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED&&
+              checkSelfPermission(PERMISSION_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     } else {
       return true;
     }
@@ -345,12 +360,25 @@ public abstract class CameraActivity extends Activity
 
   private void requestPermission() {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-      if (shouldShowRequestPermissionRationale(PERMISSION_CAMERA) ||
-          shouldShowRequestPermissionRationale(PERMISSION_STORAGE)) {
+      if (
+              shouldShowRequestPermissionRationale(PERMISSION_CAMERA) ||
+              shouldShowRequestPermissionRationale(PERMISSION_STORAGE)||
+              shouldShowRequestPermissionRationale(PERMISSION_WIFI_STATE)||
+              shouldShowRequestPermissionRationale(PERMISSION_NETWORK_STATE)||
+              shouldShowRequestPermissionRationale(PERMISSION_FINE_LOCATION)||
+              shouldShowRequestPermissionRationale(PERMISSION_COARSE_LOCATION)
+              ) {
         Toast.makeText(CameraActivity.this,
             "Camera AND storage permission are required for this demo", Toast.LENGTH_LONG).show();
       }
-      requestPermissions(new String[] {PERMISSION_CAMERA, PERMISSION_STORAGE}, PERMISSIONS_REQUEST);
+      requestPermissions(new String[] {
+              PERMISSION_CAMERA,
+              PERMISSION_STORAGE,
+              PERMISSION_WIFI_STATE,
+              PERMISSION_NETWORK_STATE,
+              PERMISSION_FINE_LOCATION,
+              PERMISSION_COARSE_LOCATION
+      }, PERMISSIONS_REQUEST);
     }
   }
 
