@@ -29,6 +29,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -55,6 +56,7 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -125,7 +127,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private PixquiCore pixquiCore;
   private Mat screenMat;
   private  MatOfRect faces;
-
+  private String faceFile;
+  private File externalDir ;
+  private String cascadeFilePath;
+  private File mCascadeFile;
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
@@ -137,9 +142,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     user_key=prefs.loadData("REGISTER_USER_KEY");
     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     calendar = Calendar.getInstance();
-    pixquiCore=new PixquiCore();
-    screenMat=new Mat();
-    faces =new MatOfRect();
+
+    faceFile = "/pdata/xml/haarcascade_frontalcatface.xml";
+    externalDir = Environment.getExternalStorageDirectory();
+    cascadeFilePath=externalDir.getAbsolutePath().toString().concat(faceFile);
+    mCascadeFile = new File(cascadeFilePath);
+    pixquiCore = new PixquiCore(mCascadeFile.getAbsolutePath(), 0);
+
   }
 
   @Override
@@ -292,7 +301,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             Utils.bitmapToMat(croppedBitmap,screenMat);
             Log.d("xxxxxxxxxxx", "BITMAP  "+rgbFrameBitmap.getHeight()+"x"+rgbFrameBitmap.getWidth());
             Log.d("xxxxxxxxxxx", "MAT  >"+screenMat.cols()+"x"+screenMat.rows());
-            pixquiCore.detectFace(screenMat,faces);
 
            /*
             final long startTime = SystemClock.uptimeMillis();
