@@ -1,7 +1,8 @@
 //
 // Created by collisionbrain on 29/09/2016.
 // cd ..
-// OCR/app/src/jni$ ndk-build
+//export PATH=$PATH:/home/hugo/Android/Ndk/android-ndk/
+// PROJECT/app/src/jni$ ndk-build
 //
 
 #include "PixquiFaceDetection.h"
@@ -29,15 +30,18 @@
 using namespace std;
 using namespace cv;
 
-vector<Rect> detect ( Mat& img)
+vector<Rect> detect ( Mat& img,string& fileCascade)
  {
      double t = 0;
      double scale;
      bool tryflip;
-     string faceFile = "/sdcard/pdata/xml/haarcascade_frontalface_alt2.xml";
+
+
 
      CascadeClassifier cascade;
-     cascade.load(faceFile);
+    if( !cascade.load( fileCascade ) ){ LOGD("--(!)Error loading File"); };
+
+
 
      vector<Rect> faces, faces2;
      const static Scalar colors[] =
@@ -52,18 +56,19 @@ vector<Rect> detect ( Mat& img)
          Scalar(255,0,255)
      };
      Mat gray, smallImg;
-
+     LOGD("VARIABLES AHS BEEN CREATED ");
      cvtColor( img, gray, COLOR_BGR2GRAY );
+     LOGD("SETTED GRAY COLOR ");
      double fx = 1 / scale;
-     resize( gray, smallImg, Size(), fx, fx, INTER_LINEAR );
-     equalizeHist( smallImg, smallImg );
+     //resize( gray, smallImg, Size(), fx, fx, INTER_LINEAR );
+     equalizeHist( gray, gray );
 
      t = (double)getTickCount();
-     cascade.detectMultiScale( smallImg, faces,
+     cascade.detectMultiScale( gray, faces,
          1.1, 2, 0
-         //|CASCADE_FIND_BIGGEST_OBJECT
+          |CASCADE_FIND_BIGGEST_OBJECT,
          //|CASCADE_DO_ROUGH_SEARCH
-         |CASCADE_SCALE_IMAGE,
+         //|CASCADE_SCALE_IMAGE,
          Size(30, 30) );
      if( tryflip )
      {
@@ -85,11 +90,20 @@ vector<Rect> detect ( Mat& img)
  }
 
 JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
-        (JNIEnv *, jclass,jlong imageMat, jlong founded)
+        (JNIEnv* jenv, jclass,jlong imageMat, jlong squareMat,jstring jFileName)
 {
     LOGD("STARTING PROCESS ");
     Mat& imgMat=*((Mat*)imageMat);
-   // vector<Rect> founded = detect(imgMat);
+    LOGD("SET INPUT MATERIAL  ");
+    const char* jnamestr = jenv->GetStringUTFChars(jFileName, NULL);
+    string stdFileName(jnamestr);
+    LOGD("SET URL STRING  ");
+    CascadeClassifier cascade;
+    if( !cascade.load( stdFileName ) ){ LOGD("--(!)Error loading File"); };
+    LOGD("LOADED FILE");
+    //vector<Rect> founded = detect(imgMat,stdFileName);
+     LOGD("*************");
+    LOGD("FAOUDED FACES FINISH  ");
    //*((Mat*)squareMat) = Mat(founded, true);
 
 }

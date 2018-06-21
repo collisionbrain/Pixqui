@@ -43,11 +43,16 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.libre.mixtli.OverlayView.DrawCallback;
 import com.libre.mixtli.R;
+import com.libre.mixtli.core.PixquiCore;
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
 import com.libre.mixtli.prefs.Pref;
 import com.libre.mixtli.tracking.MultiBoxTracker;
+
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -117,6 +122,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private SimpleDateFormat simpleDateFormat;
   private Calendar calendar ;
   private Date now ;
+  private PixquiCore pixquiCore;
+  private Mat screenMat;
+  private  MatOfRect faces;
 
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -129,6 +137,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     user_key=prefs.loadData("REGISTER_USER_KEY");
     simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     calendar = Calendar.getInstance();
+    pixquiCore=new PixquiCore();
+    screenMat=new Mat();
+    faces =new MatOfRect();
   }
 
   @Override
@@ -277,6 +288,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
           @Override
           public void run() {
             LOGGER.i("Running detection on image " + currTimestamp);
+
+            Utils.bitmapToMat(croppedBitmap,screenMat);
+            Log.d("xxxxxxxxxxx", "BITMAP  "+rgbFrameBitmap.getHeight()+"x"+rgbFrameBitmap.getWidth());
+            Log.d("xxxxxxxxxxx", "MAT  >"+screenMat.cols()+"x"+screenMat.rows());
+            pixquiCore.detectFace(screenMat,faces);
+
+           /*
             final long startTime = SystemClock.uptimeMillis();
             final List<Classifier.Recognition> results = detector.recognizeImage(croppedBitmap);
             final ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -314,7 +332,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
             tracker.trackResults(mappedRecognitions, luminanceCopy, currTimestamp);
             trackingOverlay.postInvalidate();
-
+*/
             requestRender();
             computingDetection = false;
           }
