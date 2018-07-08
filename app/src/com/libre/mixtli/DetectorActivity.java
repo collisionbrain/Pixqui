@@ -54,6 +54,9 @@ import com.libre.mixtli.tracking.MultiBoxTracker;
 import org.opencv.android.Utils;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -64,6 +67,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+
+import static org.opencv.core.Core.flip;
+import static org.opencv.imgproc.Imgproc.getRotationMatrix2D;
+
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
  * objects.
@@ -99,6 +106,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private long lastProcessingTimeMs;
   private Bitmap rgbFrameBitmap = null;
   private Bitmap croppedBitmap = null;
+
+  private Bitmap fcroppedBitmap = null;
+
   private Bitmap cropCopyBitmap = null;
 
   private boolean computingDetection = false;
@@ -147,8 +157,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
     externalDir = Environment.getExternalStorageDirectory();
     cascadeFilePath=externalDir.getAbsolutePath().toString().concat(faceFile);
     mCascadeFile = new File(cascadeFilePath);
-    pixquiCore = new PixquiCore(mCascadeFile.getAbsolutePath(), 0);
 
+    pixquiCore = new PixquiCore(mCascadeFile.getAbsolutePath(), 0);
+    screenMat=new Mat();
+    faces=new MatOfRect();
   }
 
   @Override
@@ -167,6 +179,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         detector = TensorFlowObjectDetectionAPIModel.create(
             getAssets(), TF_OD_API_MODEL_FILE, TF_OD_API_LABELS_FILE, TF_OD_API_INPUT_SIZE);
         cropSize = TF_OD_API_INPUT_SIZE;
+
+
+
+
       } catch (final IOException e) {
         LOGGER.e("Exception initializing classifier!", e);
         Toast toast =
@@ -179,13 +195,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     previewWidth = size.getWidth();
     previewHeight = size.getHeight();
-
+    pixquiCore.setMinFaceSize(Math.round(previewHeight *  0.2f));
     sensorOrientation = rotation - getScreenOrientation();
     LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
 
     LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
     rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
     croppedBitmap = Bitmap.createBitmap(cropSize, cropSize, Config.ARGB_8888);
+    fcroppedBitmap = Bitmap.createBitmap(cropSize, cropSize, Config.ARGB_8888);
 
     frameToCropTransform =
         ImageUtils.getTransformationMatrix(
@@ -299,8 +316,19 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             LOGGER.i("Running detection on image " + currTimestamp);
 
             Utils.bitmapToMat(croppedBitmap,screenMat);
+            Mat grayImage=new Mat();
+            Imgproc.cvtColor(screenMat, grayImage, Imgproc.COLOR_BGR2GRAY);
+            Mat dst=rotate( grayImage, 180);
+           // Utils.matToBitmap(dst,fcroppedBitmap);
+
             Log.d("xxxxxxxxxxx", "BITMAP  "+rgbFrameBitmap.getHeight()+"x"+rgbFrameBitmap.getWidth());
             Log.d("xxxxxxxxxxx", "MAT  >"+screenMat.cols()+"x"+screenMat.rows());
+
+            pixquiCore.detect(dst, faces);
+            List<Rect> list=faces.toList();
+            Log.d("xxxxxxxxxxx", "FACES  >> "+list.size());
+            screenMat.release();
+
 
            /*
             final long startTime = SystemClock.uptimeMillis();
@@ -381,5 +409,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   @Override
   public void onSetDebug(final boolean debug) {
     detector.enableStatLogging(debug);
+  }
+  Mat rotate(Mat src, double angle)
+  {
+    Mat dst=new Mat();
+    Point pt=new Point(src.cols()/2, src.rows()/2);
+    Mat r = getRotationMatrix2D(pt, angle, 1.0);
+    Imgproc.warpAffine(src, dst, r, new  org.opencv.core.Size(src.cols(), src.rows()));
+    return dst;
   }
 }
