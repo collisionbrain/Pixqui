@@ -1,8 +1,8 @@
 <component name="libraryTable">
   <library name="Gradle: org.osmdroid:osmdroid-android-6.0.1">
     <CLASSES>
-      <root url="file://$USER_HOME$/.android/build-cache/92a6ed2765f982239c3925a3e51fd31bdfe68e1f/output/res" />
-      <root url="jar://$USER_HOME$/.android/build-cache/92a6ed2765f982239c3925a3e51fd31bdfe68e1f/output/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.android/build-cache/5a78963060b75aff2c779aca912dc39b3759680c/output/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.android/build-cache/5a78963060b75aff2c779aca912dc39b3759680c/output/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
