@@ -9,8 +9,6 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/opencv" />
-            <option value="$PROJECT_DIR$/osmbonuspack_v5.1" />
-            <option value="$PROJECT_DIR$/osmdroid-android-4.3" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

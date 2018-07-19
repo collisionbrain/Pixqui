@@ -1,7 +1,8 @@
 //
 // Created by collisionbrain on 29/09/2016.
 // cd ..
-// OCR/app/src/jni$ ndk-build
+//export PATH=$PATH:/home/hugo/Android/Ndk/android-ndk/
+// PROJECT/app/src/jni$ ndk-build
 //
 
 #include "PixquiFaceDetection.h"
@@ -30,13 +31,89 @@
 using namespace std;
 using namespace cv;
 
+<<<<<<< HEAD
 
+=======
+vector<Rect> detect ( Mat& img,string& fileCascade)
+ {
+     double t = 0;
+     double scale;
+     bool tryflip;
+
+
+
+     CascadeClassifier cascade;
+    if( !cascade.load( fileCascade ) ){ LOGD("--(!)Error loading File"); };
+
+
+
+     vector<Rect> faces, faces2;
+     const static Scalar colors[] =
+     {
+         Scalar(255,0,0),
+         Scalar(255,128,0),
+         Scalar(255,255,0),
+         Scalar(0,255,0),
+         Scalar(0,128,255),
+         Scalar(0,255,255),
+         Scalar(0,0,255),
+         Scalar(255,0,255)
+     };
+     Mat gray, smallImg;
+     LOGD("VARIABLES AHS BEEN CREATED ");
+     cvtColor( img, gray, COLOR_BGR2GRAY );
+     LOGD("SETTED GRAY COLOR ");
+     double fx = 1 / scale;
+     //resize( gray, smallImg, Size(), fx, fx, INTER_LINEAR );
+     equalizeHist( gray, gray );
+
+     t = (double)getTickCount();
+     cascade.detectMultiScale( gray, faces,
+         1.1, 2, 0
+          |CASCADE_FIND_BIGGEST_OBJECT,
+         //|CASCADE_DO_ROUGH_SEARCH
+         //|CASCADE_SCALE_IMAGE,
+         Size(30, 30) );
+     if( tryflip )
+     {
+         flip(smallImg, smallImg, 1);
+         cascade.detectMultiScale( smallImg, faces2,
+                                  1.1, 2, 0
+                                  //|CASCADE_FIND_BIGGEST_OBJECT
+                                  //|CASCADE_DO_ROUGH_SEARCH
+                                  |CASCADE_SCALE_IMAGE,
+                                  Size(30, 30) );
+         for( vector<Rect>::const_iterator r = faces2.begin(); r != faces2.end(); ++r )
+         {
+             faces.push_back(Rect(smallImg.cols - r->x - r->width, r->y, r->width, r->height));
+         }
+     }
+
+    return faces;
+
+ }
+>>>>>>> 0540b9abfea5c4ba5205bc5eb94db0a703cb35a1
 
 JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
-        (JNIEnv *, jclass,jlong imageMat, jlong squareMat)
+        (JNIEnv* jenv, jclass,jlong imageMat, jlong squareMat,jstring jFileName)
 {
     LOGD("STARTING PROCESS ");
+<<<<<<< HEAD
      
+=======
+    Mat& imgMat=*((Mat*)imageMat);
+    LOGD("SET INPUT MATERIAL  ");
+    const char* jnamestr = jenv->GetStringUTFChars(jFileName, NULL);
+    string stdFileName(jnamestr);
+    LOGD("SET URL STRING  ");
+    CascadeClassifier cascade;
+    if( !cascade.load( stdFileName ) ){ LOGD("--(!)Error loading File"); };
+    LOGD("LOADED FILE");
+    //vector<Rect> founded = detect(imgMat,stdFileName);
+     LOGD("*************");
+    LOGD("FAOUDED FACES FINISH  ");
+   //*((Mat*)squareMat) = Mat(founded, true);
+>>>>>>> 0540b9abfea5c4ba5205bc5eb94db0a703cb35a1
 
 }
 

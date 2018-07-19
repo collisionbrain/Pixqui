@@ -29,25 +29,47 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.libre.mixtli.OverlayView.DrawCallback;
 import com.libre.mixtli.R;
+import com.libre.mixtli.core.PixquiCore;
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
 import com.libre.mixtli.prefs.Pref;
-import com.libre.mixtli.task.ReportEventService;
 import com.libre.mixtli.tracking.MultiBoxTracker;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
+
+import static org.opencv.core.Core.flip;
+import static org.opencv.imgproc.Imgproc.getRotationMatrix2D;
 
 /**
  * An activity that uses a TensorFlowMultiBoxDetector and ObjectTracker to detect and then track
@@ -62,9 +84,6 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
       "file:///android_asset/tensorflow_inception_graph.pb";
   private static final String TF_OD_API_LABELS_FILE = "file:///android_asset/imagenet_comp_graph_label_strings.txt";
 
-  // Which detection model to use: by default uses Tensorflow Object Detection API frozen
-  // checkpoints.  Optionally use legacy Multibox (trained using an older version of the API)
-  // or YOLO.
   private enum DetectorMode {
     TF_OD_API, MULTIBOX, YOLO;
   }
@@ -87,6 +106,9 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private long lastProcessingTimeMs;
   private Bitmap rgbFrameBitmap = null;
   private Bitmap croppedBitmap = null;
+
+  private Bitmap fcroppedBitmap = null;
+
   private Bitmap cropCopyBitmap = null;
 
   private boolean computingDetection = false;
@@ -105,12 +127,40 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   private Context context;
   private CameraActivity activity ;
 
-
+  private FirebaseStorage firebaseStorage ;
+  private StorageReference storageRef ;
+  private StorageReference uploadeRef;
+  private String user_key;
+  private SimpleDateFormat simpleDateFormat;
+  private Calendar calendar ;
+  private Date now ;
+  private PixquiCore pixquiCore;
+  private Mat screenMat;
+  private  MatOfRect faces;
+  private String faceFile;
+  private File externalDir ;
+  private String cascadeFilePath;
+  private File mCascadeFile;
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
     super.onCreate(null);
     context=this;
+    prefs=new Pref(context);
+    firebaseStorage = FirebaseStorage.getInstance();
+    storageRef = firebaseStorage.getReference();
+    user_key=prefs.loadData("REGISTER_USER_KEY");
+    simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    calendar = Calendar.getInstance();
+
+    faceFile = "/pdata/xml/haarcascade_frontalcatface.xml";
+    externalDir = Environment.getExternalStorageDirectory();
+    cascadeFilePath=externalDir.getAbsolutePath().toString().concat(faceFile);
+    mCascadeFile = new File(cascadeFilePath);
+
+    pixquiCore = new PixquiCore(mCascadeFile.getAbsolutePath(), 0);
+    screenMat=new Mat();
+    faces=new MatOfRect();
   }
 
   @Override
@@ -129,6 +179,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
         detector = TensorFlowObjectDetectionAPIModel.create(
             getAssets(), TF_OD_API_MODEL_FILE, TF_OD_API_LABELS_FILE, TF_OD_API_INPUT_SIZE);
         cropSize = TF_OD_API_INPUT_SIZE;
+
+
+
+
       } catch (final IOException e) {
         LOGGER.e("Exception initializing classifier!", e);
         Toast toast =
@@ -141,13 +195,14 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
     previewWidth = size.getWidth();
     previewHeight = size.getHeight();
-
+    pixquiCore.setMinFaceSize(Math.round(previewHeight *  0.2f));
     sensorOrientation = rotation - getScreenOrientation();
     LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
 
     LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
     rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
     croppedBitmap = Bitmap.createBitmap(cropSize, cropSize, Config.ARGB_8888);
+    fcroppedBitmap = Bitmap.createBitmap(cropSize, cropSize, Config.ARGB_8888);
 
     frameToCropTransform =
         ImageUtils.getTransformationMatrix(
@@ -259,6 +314,23 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
           @Override
           public void run() {
             LOGGER.i("Running detection on image " + currTimestamp);
+
+            Utils.bitmapToMat(croppedBitmap,screenMat);
+            Mat grayImage=new Mat();
+            Imgproc.cvtColor(screenMat, grayImage, Imgproc.COLOR_BGR2GRAY);
+            Mat dst=rotate( grayImage, 180);
+           // Utils.matToBitmap(dst,fcroppedBitmap);
+
+            Log.d("xxxxxxxxxxx", "BITMAP  "+rgbFrameBitmap.getHeight()+"x"+rgbFrameBitmap.getWidth());
+            Log.d("xxxxxxxxxxx", "MAT  >"+screenMat.cols()+"x"+screenMat.rows());
+
+            pixquiCore.detect(dst, faces);
+            List<Rect> list=faces.toList();
+            Log.d("xxxxxxxxxxx", "FACES  >> "+list.size());
+            screenMat.release();
+
+
+           /*
             final long startTime = SystemClock.uptimeMillis();
             final List<Classifier.Recognition> results = detector.recognizeImage(croppedBitmap);
             final ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -283,9 +355,10 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
             for (final Classifier.Recognition result : results) {
                final RectF location = result.getLocation();
               if (location != null && result.getConfidence() >= minimumConfidence) {
-                //Toast.makeText(DetectorActivity.this,"Pistola:" +result.getConfidence().toString() , Toast.LENGTH_SHORT).show();
+                Toast.makeText(DetectorActivity.this,"Pistola:" +result.getConfidence().toString() , Toast.LENGTH_SHORT).show();
                 activity.setGunAllert();
-                canvas.drawRect(location, paint);
+                reportEventService(byteArrayToUpload);
+                //canvas.drawRect(location, paint);
                 cropToFrameTransform.mapRect(location);
 
                 result.setLocation(location);
@@ -295,7 +368,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
             tracker.trackResults(mappedRecognitions, luminanceCopy, currTimestamp);
             trackingOverlay.postInvalidate();
-
+*/
             requestRender();
             computingDetection = false;
           }
@@ -304,13 +377,23 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
 
 
   private  void reportEventService(final byte [] bytes){
-
-
-    prefs=new Pref(this);
-    Intent msgIntent = new Intent(DetectorActivity.this, ReportEventService.class);
-    msgIntent.putExtra("byteBmp", bytes);
-    msgIntent.putExtra("idUser",prefs.loadData("REGISTER_USER_KEY"));
-    startService(msgIntent);
+     now = calendar.getTime();
+    String timestamp = simpleDateFormat.format(now);
+    firebaseStorage = FirebaseStorage.getInstance();
+    storageRef = firebaseStorage.getReference();
+    uploadeRef = storageRef.child(user_key+"/"+timestamp.concat(".jpg"));
+    UploadTask uploadTask = uploadeRef.putBytes(bytes);
+    uploadTask.addOnFailureListener(new OnFailureListener() {
+      @Override
+      public void onFailure(@NonNull Exception exception) {
+       Log.e("***********",exception.getMessage().toString());
+      }
+    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+      @Override
+      public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+        Log.e("***** TRANSFER :"," "+taskSnapshot.getBytesTransferred());
+      }
+    });
   }
 
   @Override
@@ -326,5 +409,13 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   @Override
   public void onSetDebug(final boolean debug) {
     detector.enableStatLogging(debug);
+  }
+  Mat rotate(Mat src, double angle)
+  {
+    Mat dst=new Mat();
+    Point pt=new Point(src.cols()/2, src.rows()/2);
+    Mat r = getRotationMatrix2D(pt, angle, 1.0);
+    Imgproc.warpAffine(src, dst, r, new  org.opencv.core.Size(src.cols(), src.rows()));
+    return dst;
   }
 }
