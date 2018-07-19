@@ -11,6 +11,7 @@
 #include <opencv2/objdetect.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <tensorflow/c/c_api.h>
 #include <iostream>
 #include <string>
 #include <algorithm>
@@ -30,6 +31,9 @@
 using namespace std;
 using namespace cv;
 
+<<<<<<< HEAD
+
+=======
 vector<Rect> detect ( Mat& img,string& fileCascade)
  {
      double t = 0;
@@ -88,11 +92,15 @@ vector<Rect> detect ( Mat& img,string& fileCascade)
     return faces;
 
  }
+>>>>>>> 0540b9abfea5c4ba5205bc5eb94db0a703cb35a1
 
 JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
         (JNIEnv* jenv, jclass,jlong imageMat, jlong squareMat,jstring jFileName)
 {
     LOGD("STARTING PROCESS ");
+<<<<<<< HEAD
+     
+=======
     Mat& imgMat=*((Mat*)imageMat);
     LOGD("SET INPUT MATERIAL  ");
     const char* jnamestr = jenv->GetStringUTFChars(jFileName, NULL);
@@ -105,6 +113,7 @@ JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
      LOGD("*************");
     LOGD("FAOUDED FACES FINISH  ");
    //*((Mat*)squareMat) = Mat(founded, true);
+>>>>>>> 0540b9abfea5c4ba5205bc5eb94db0a703cb35a1
 
 }
 
