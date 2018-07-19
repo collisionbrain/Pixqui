@@ -1,7 +1,8 @@
 //
 // Created by collisionbrain on 29/09/2016.
 // cd ..
-// OCR/app/src/jni$ ndk-build
+//export PATH=$PATH:/home/hugo/Android/Ndk/android-ndk/
+// PROJECT/app/src/jni$ ndk-build
 //
 
 #include "PixquiFaceDetection.h"
@@ -29,17 +30,18 @@
 using namespace std;
 using namespace cv;
 
-void detect ( Mat& img)
+vector<Rect> detect ( Mat& img,string& fileCascade)
  {
      double t = 0;
      double scale;
      bool tryflip;
-     string faceFile = "/sdcard/pdata/xml/haarcascade_frontalface_alt2.xml";
+
+
 
      CascadeClassifier cascade;
-     cascade.load(faceFile);
+    if( !cascade.load( fileCascade ) ){ LOGD("--(!)Error loading File"); };
 
-     CascadeClassifier& nestedCascade,
+
 
      vector<Rect> faces, faces2;
      const static Scalar colors[] =
@@ -54,18 +56,19 @@ void detect ( Mat& img)
          Scalar(255,0,255)
      };
      Mat gray, smallImg;
-
+     LOGD("VARIABLES AHS BEEN CREATED ");
      cvtColor( img, gray, COLOR_BGR2GRAY );
+     LOGD("SETTED GRAY COLOR ");
      double fx = 1 / scale;
-     resize( gray, smallImg, Size(), fx, fx, INTER_LINEAR );
-     equalizeHist( smallImg, smallImg );
+     //resize( gray, smallImg, Size(), fx, fx, INTER_LINEAR );
+     equalizeHist( gray, gray );
 
      t = (double)getTickCount();
-     cascade.detectMultiScale( smallImg, faces,
+     cascade.detectMultiScale( gray, faces,
          1.1, 2, 0
-         //|CASCADE_FIND_BIGGEST_OBJECT
+          |CASCADE_FIND_BIGGEST_OBJECT,
          //|CASCADE_DO_ROUGH_SEARCH
-         |CASCADE_SCALE_IMAGE,
+         //|CASCADE_SCALE_IMAGE,
          Size(30, 30) );
      if( tryflip )
      {
@@ -81,42 +84,27 @@ void detect ( Mat& img)
              faces.push_back(Rect(smallImg.cols - r->x - r->width, r->y, r->width, r->height));
          }
      }
-     t = (double)getTickCount() - t;
-     printf( "detection time = %g ms\n", t*1000/getTickFrequency());
-     for ( size_t i = 0; i < faces.size(); i++ )
-     {
-         Rect r = faces[i];
-         Mat smallImgROI;
-         vector<Rect> nestedObjects;
-         Point center;
-         Scalar color = colors[i%8];
-         int radius;
 
-         double aspect_ratio = (double)r.width/r.height;
-         if( 0.75 < aspect_ratio && aspect_ratio < 1.3 )
-         {
-             center.x = cvRound((r.x + r.width*0.5)*scale);
-             center.y = cvRound((r.y + r.height*0.5)*scale);
-             radius = cvRound((r.width + r.height)*0.25*scale);
-             circle( img, center, radius, color, 3, 8, 0 );
-         }
-         else
-             rectangle( img, cvPoint(cvRound(r.x*scale), cvRound(r.y*scale)),
-                        cvPoint(cvRound((r.x + r.width-1)*scale), cvRound((r.y + r.height-1)*scale)),
-                        color, 3, 8, 0);
+    return faces;
 
-     }
-     retturn img;
-     //imshow( "result", img );
  }
 
 JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
-        (JNIEnv *, jclass,jlong imageMat, jlong squareMat)
+        (JNIEnv* jenv, jclass,jlong imageMat, jlong squareMat,jstring jFileName)
 {
     LOGD("STARTING PROCESS ");
     Mat& imgMat=*((Mat*)imageMat);
-    vector<Point> founded = detect(imgMat);
-   *((Mat*)squareMat) = Mat(founded, true);
+    LOGD("SET INPUT MATERIAL  ");
+    const char* jnamestr = jenv->GetStringUTFChars(jFileName, NULL);
+    string stdFileName(jnamestr);
+    LOGD("SET URL STRING  ");
+    CascadeClassifier cascade;
+    if( !cascade.load( stdFileName ) ){ LOGD("--(!)Error loading File"); };
+    LOGD("LOADED FILE");
+    //vector<Rect> founded = detect(imgMat,stdFileName);
+     LOGD("*************");
+    LOGD("FAOUDED FACES FINISH  ");
+   //*((Mat*)squareMat) = Mat(founded, true);
 
 }
 

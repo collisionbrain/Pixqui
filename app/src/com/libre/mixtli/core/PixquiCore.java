@@ -1,46 +1,50 @@
 package com.libre.mixtli.core;
 
-import android.graphics.Bitmap;
-import android.graphics.PointF;
-import android.util.Log;
-
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfRect;
-
-import java.util.Map;
 
 /**
  * Created by hugo on 25/05/18.
  */
 
 public class PixquiCore {
-
-        private Mat inputImageMat;
-        private MatOfRect txtArea;
-
-        static{
-            System.loadLibrary("opencv_java3");
-            System.loadLibrary("pixqui_face_detection");
-
-
-
-        }
-        public PixquiCore(){
-
-        }
-
-        public void detectFace(MatOfPoint cardArea) {
-
-            detectFace(inputImageMat.getNativeObjAddr(), cardArea.getNativeObjAddr());
-
-        }
-
-
-
-        public void destroyObject(){
-            this.inputImageMat=null;
-        }
-        public native  long  detectFace(long inputImage,long outputArea);
+    static{
+        System.loadLibrary("opencv_java3");
+        System.loadLibrary("pixqui_face_detection");
 
     }
+    public PixquiCore(String cascadeName, int minFaceSize) {
+
+        mNativeObj = nativeCreateObject(cascadeName, minFaceSize);
+    }
+
+    public void start() {
+        nativeStart(mNativeObj);
+    }
+
+    public void stop() {
+        nativeStop(mNativeObj);
+    }
+
+    public void setMinFaceSize(int size) {
+        nativeSetFaceSize(mNativeObj, size);
+    }
+
+    public void detect(Mat imageGray, MatOfRect faces) {
+        nativeDetect(mNativeObj, imageGray.getNativeObjAddr(), faces.getNativeObjAddr());
+    }
+
+    public void release() {
+        nativeDestroyObject(mNativeObj);
+        mNativeObj = 0;
+    }
+
+    private long mNativeObj = 0;
+
+    private static native long nativeCreateObject(String cascadeName, int minFaceSize);
+    private static native void nativeDestroyObject(long thiz);
+    private static native void nativeStart(long thiz);
+    private static native void nativeStop(long thiz);
+    private static native void nativeSetFaceSize(long thiz, int size);
+    private static native void nativeDetect(long thiz, long inputImage, long faces);
+}

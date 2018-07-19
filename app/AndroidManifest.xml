@@ -48,7 +48,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.libre.mixtli.DetectorActivity"
+        <activity android:name="com.libre.mixtli.ClassifierActivity"
             android:screenOrientation="portrait"
             android:label="@string/activity_name_detection">
         </activity>

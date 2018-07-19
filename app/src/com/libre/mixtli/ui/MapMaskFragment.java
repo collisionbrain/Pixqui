@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.annotation.RequiresPermission;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.PermissionChecker;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +27,12 @@ import org.osmdroid.views.MapView;
 
 public class MapMaskFragment extends Fragment implements LocationListener{
     private MapView mMapView;
-    public Location location;
     private double longitude;
     private double latitude;
     private Context contexto;
     private  IMapController mapController;
     private LocationManager locationManager;
+    private Location location;
     //private MyItemizedOverlay myItemizedOverlay = null;
 
     @SuppressWarnings("deprecation")
@@ -44,11 +45,12 @@ public class MapMaskFragment extends Fragment implements LocationListener{
         mMapView.setBuiltInZoomControls(true);
         mMapView.setMultiTouchControls(true);
 
-        GeoPoint startPoint = new GeoPoint(48.13, -1.63);
+        GeoPoint startPoint = new GeoPoint(19.3804234,-99.0167972);
         mapController = mMapView.getController();
-        mapController.setZoom(30);
+        mapController.setZoom(16);
         mapController.setCenter(startPoint);
-        return root;
+        mapController.animateTo(startPoint);
+        return mMapView;
     }
 
     @SuppressWarnings("MissingPermission")
@@ -61,16 +63,45 @@ public class MapMaskFragment extends Fragment implements LocationListener{
 
     }
 
+    @Override
+    public void onPause(){
+        if (mMapView != null) {
+            mMapView.onPause();
+        }
+        super.onPause();
+    }
+
     @SuppressWarnings("MissingPermission")
     @Override
     public void onResume() {
         super.onResume();
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+        location=locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        setLocationInMap(location.getLatitude(),location.getLongitude());
+        if (mMapView != null) {
+            mMapView.onResume();
+        }
+       getView().setOnKeyListener( new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event )
+            {
+                if( keyCode == KeyEvent.KEYCODE_BACK )
+                {
+                    return true;
+
+                }
+                return false;
+            }
+        } );
     }
     @Override
     public void onLocationChanged(Location location) {
-        setLocationInMap(location.getLatitude(),location.getLongitude());
+        if( !this.location.equals(location)){
+            this.location=location;
+        }
+
     }
 
     @Override
@@ -90,9 +121,10 @@ public class MapMaskFragment extends Fragment implements LocationListener{
 
 
     public void setLocationInMap(double latitude,double longitude){
-        GeoPoint startPoint = new GeoPoint(latitude, longitude);
+        GeoPoint point = new GeoPoint(latitude, longitude);
         mapController = mMapView.getController();
-        mapController.setZoom(9);
-        mapController.setCenter(startPoint);
+        mapController.setZoom(16);
+        mapController.setCenter(point);
+        mapController.animateTo(point);
     }
 }

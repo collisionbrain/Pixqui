@@ -1,1 +1,7 @@
-pistola
+pistola 360
+pistola 180
+pistola arriba
+pistola abajo
+pistola izquierdo
+pistola 270
+pistola derecho
