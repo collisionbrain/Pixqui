@@ -50,7 +50,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.libre.mixtli.R;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
 import com.libre.mixtli.ui.MapMaskFragment;
@@ -201,7 +200,7 @@ public abstract class CameraActivity extends Activity
         };
 
         if(startDemo) {
-          processImage();
+          processImage(this);
         }
   }
 
@@ -262,7 +261,7 @@ public abstract class CameraActivity extends Activity
             }
           };
 
-      processImage();
+      processImage(this);
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
       Trace.endSection();
@@ -524,7 +523,7 @@ public abstract class CameraActivity extends Activity
     }
   }
 
-  protected abstract void processImage();
+  protected abstract void processImage(CameraActivity cameraActivity);
   protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
   protected abstract int getLayoutId();
   protected abstract Size getDesiredPreviewFrameSize();
@@ -564,7 +563,7 @@ public abstract class CameraActivity extends Activity
   private void setDemoView(){
     lytPrincipal.setVisibility(View.GONE);
     startDemo=true;
-    processImage();
+    processImage(this);
     lytDemo.setVisibility(View.VISIBLE);
   }
   private void setPrincipal(){
@@ -574,7 +573,7 @@ public abstract class CameraActivity extends Activity
     btnDemo.reset();
     btnInicio.reset();
     startDemo=false;
-    processImage();
+    processImage(this);
     lytDemo.setVisibility(View.GONE);
   }
 

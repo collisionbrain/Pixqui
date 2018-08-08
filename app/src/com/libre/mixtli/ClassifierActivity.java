@@ -7,12 +7,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
-import android.os.SystemClock;
 import android.util.Size;
 import android.util.TypedValue;
-import android.view.Display;
-import android.view.Surface;
-
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
@@ -30,6 +26,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     private Bitmap rgbFrameBitmap = null;
     private Bitmap croppedBitmap = null;
     private Bitmap cropCopyBitmap = null;
+    private   CameraActivity cameraActivity;
 
     private long lastProcessingTimeMs;
 
@@ -49,16 +46,16 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     // --input_node_names="Mul" \
     // --output_node_names="final_result" \
     // --input_binary=true
-    private static final int INPUT_SIZE = 224;
-    private static final int IMAGE_MEAN = 117;
-    private static final float IMAGE_STD = 1;
-    private static final String INPUT_NAME = "input";
-    private static final String OUTPUT_NAME = "output";
+    private static final int INPUT_SIZE = 299;
+    private static final int IMAGE_MEAN = 128;
+    private static final float IMAGE_STD = 128;
+    private static final String INPUT_NAME = "Mul";
+    private static final String OUTPUT_NAME = "final_result";
+    private float minimumConfidence=0.9f;
 
-
-    private static final String MODEL_FILE = "file:///android_asset/optimized_tensorflow_inception_graph.pb";
+    private static final String MODEL_FILE = "file:///android_asset/new_retrained_graph.pb";
     private static final String LABEL_FILE =
-            "file:///android_asset/imagenet_comp_graph_label_strings.txt";
+            "file:///android_asset/retrained_labels.txt";
 
 
     private static final boolean MAINTAIN_ASPECT = true;
@@ -109,7 +106,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
         previewHeight = size.getHeight();
 
         sensorOrientation = rotation - getScreenOrientation();
-        LOGGER.e("Camera orientation relative to screen canvas: %d", sensorOrientation);
+        LOGGER.i("Camera orientation relative to screen canvas: %d", sensorOrientation);
 
         LOGGER.i("Initializing at size %dx%d", previewWidth, previewHeight);
         rgbFrameBitmap = Bitmap.createBitmap(previewWidth, previewHeight, Config.ARGB_8888);
@@ -133,7 +130,8 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     }
 
     @Override
-    protected void processImage() {
+    protected void processImage(final CameraActivity cameraActivity) {
+        this.cameraActivity=cameraActivity;
         rgbFrameBitmap.setPixels(getRgbBytes(), 0, previewWidth, 0, 0, previewWidth, previewHeight);
         final Canvas canvas = new Canvas(croppedBitmap);
         canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
@@ -146,15 +144,16 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
                 new Runnable() {
                     @Override
                     public void run() {
-                        final long startTime = SystemClock.uptimeMillis();
+
                         final List<Classifier.Recognition> results = classifier.recognizeImage(croppedBitmap);
-                        lastProcessingTimeMs = SystemClock.uptimeMillis() - startTime;
-                        LOGGER.i("Detect: %s", results);
-                        cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
-                        if (resultsView == null) {
-                            resultsView = (ResultsView) findViewById(R.id.results);
+
+                        for (Classifier.Recognition res:results
+                             ) {
+                            if(res.getConfidence()>minimumConfidence){
+                                cameraActivity.setGunAllert();
+                            }
                         }
-                        resultsView.setResults(results);
+                        cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
                         requestRender();
                         readyForNextImage();
                     }
