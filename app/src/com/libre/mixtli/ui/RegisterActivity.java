@@ -262,7 +262,8 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
             if(registerSuccess) {
 
                 prefs.saveData("REGISTER_USER_KEY", userGuid);
-                Intent registerIntent = new Intent(RegisterActivity.this, DetectorActivity.class);
+                Intent registerIntent = new Intent(RegisterActivity.this, RegisterContactActivity.class);
+                registerIntent.putExtra("REGISTER_USER_KEY",userGuid);
                 RegisterActivity.this.startActivity(registerIntent);
                 RegisterActivity.this.finish();
 

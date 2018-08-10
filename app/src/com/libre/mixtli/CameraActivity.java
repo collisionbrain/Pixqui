@@ -38,6 +38,8 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Trace;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Size;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -56,7 +58,7 @@ import com.libre.mixtli.ui.MapMaskFragment;
 import com.unstoppable.submitbuttonview.SubmitButton;
 import java.nio.ByteBuffer;
 
-public abstract class CameraActivity extends Activity
+public abstract class CameraActivity extends AppCompatActivity
     implements OnImageAvailableListener, Camera.PreviewCallback,ActivityCompat.OnRequestPermissionsResultCallback {
   private static final Logger LOGGER = new Logger();
 
@@ -103,11 +105,14 @@ public abstract class CameraActivity extends Activity
     fragmentManager=getFragmentManager();
     fragmentTransaction=fragmentManager.beginTransaction();
     setContentView(R.layout.activity_camera);
+    Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+    myToolbar.setTitle("");
+    setSupportActionBar(myToolbar);
+
     btnDemo=(SubmitButton) findViewById(R.id.btnDemo);
     btnDemo.setOnClickListener(demoListener);
     btnInicio=(SubmitButton) findViewById(R.id.btnInicar);
     btnInicio.setOnClickListener(startListener);
-    btnSettings=(ImageView) findViewById(R.id.btnSettings);
     lytPrincipal=(LinearLayout) findViewById(R.id.lytPrincipal);
     lytDemo=(LinearLayout) findViewById(R.id.lytDemo);
     gunOn=(ImageView) findViewById(R.id.gunOn);
@@ -117,6 +122,7 @@ public abstract class CameraActivity extends Activity
     animation.setInterpolator(new LinearInterpolator());
     animation.setRepeatCount(Animation.INFINITE);
     animation.setRepeatMode(Animation.REVERSE);
+
     if (hasPermission()) {
       setFragment();
     } else {
@@ -200,7 +206,7 @@ public abstract class CameraActivity extends Activity
         };
 
         if(startDemo) {
-          processImage(this);
+          processImage();
         }
   }
 
@@ -261,7 +267,7 @@ public abstract class CameraActivity extends Activity
             }
           };
 
-      processImage(this);
+      processImage();
     } catch (final Exception e) {
       LOGGER.e(e, "Exception!");
       Trace.endSection();
@@ -523,7 +529,7 @@ public abstract class CameraActivity extends Activity
     }
   }
 
-  protected abstract void processImage(CameraActivity cameraActivity);
+  protected abstract void processImage();
   protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
   protected abstract int getLayoutId();
   protected abstract Size getDesiredPreviewFrameSize();
@@ -563,7 +569,7 @@ public abstract class CameraActivity extends Activity
   private void setDemoView(){
     lytPrincipal.setVisibility(View.GONE);
     startDemo=true;
-    processImage(this);
+    processImage();
     lytDemo.setVisibility(View.VISIBLE);
   }
   private void setPrincipal(){
@@ -573,7 +579,7 @@ public abstract class CameraActivity extends Activity
     btnDemo.reset();
     btnInicio.reset();
     startDemo=false;
-    processImage(this);
+    processImage();
     lytDemo.setVisibility(View.GONE);
   }
 

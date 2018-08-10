@@ -22,14 +22,24 @@
 
     android:orientation="vertical"
     tools:context="com.libre.mixtli.CameraActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 <FrameLayout
     android:id="@+id/container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"></FrameLayout>
+    android:layout_height="match_parent"
+    android:paddingTop="50dp"></FrameLayout>
     <FrameLayout
         android:id="@+id/container_mask"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></FrameLayout>
+        android:layout_height="match_parent"
+        android:paddingTop="50dp"></FrameLayout>
     <LinearLayout
         android:id="@+id/lytPrincipal"
         android:layout_width="match_parent"
@@ -40,21 +50,15 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="70" >
-            <ImageView
-                android:id="@+id/btnSettings"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:src="@drawable/ic_settings_white_24dp"
-                android:padding="50dp"
-                android:visibility="gone"
-                android:layout_alignParentRight="true"/>
+            android:layout_weight="80" >
+
+
 
             </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="30"
+            android:layout_weight="20"
             android:orientation="horizontal"
             android:weightSum="100">
             <RelativeLayout

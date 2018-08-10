@@ -272,7 +272,7 @@ public class DetectorActivity extends CameraActivity implements OnImageAvailable
   OverlayView trackingOverlay;
 
   @Override
-  protected void processImage(CameraActivity cameraActivity) {
+  protected void processImage() {
     ++timestamp;
     final long currTimestamp = timestamp;
     byte[] originalLuminance = getLuminance();

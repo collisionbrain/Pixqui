@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.libre.mixtli.ClassifierActivity;
 import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
 import com.libre.mixtli.prefs.Pref;
@@ -37,7 +39,7 @@ public class Splash extends Activity {
                         Splash.this.startActivity(registerIntent);
                         Splash.this.finish();
                     }else{
-                        Intent registerIntent = new Intent(Splash.this,DetectorActivity.class);
+                        Intent registerIntent = new Intent(Splash.this,ClassifierActivity.class);
                         Splash.this.startActivity(registerIntent);
                         Splash.this.finish();
                     }
