@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
 
-/** A classifier specialized to label images using TensorFlow. */
 public class TensorFlowImageClassifier implements Classifier {
   private static final String TAG = "TensorFlowImageClassifier";
 
@@ -74,14 +73,14 @@ public class TensorFlowImageClassifier implements Classifier {
    * @throws IOException
    */
   public static Classifier create(
-      AssetManager assetManager,
-      String modelFilename,
-      String labelFilename,
-      int inputSize,
-      int imageMean,
-      float imageStd,
-      String inputName,
-      String outputName) {
+          AssetManager assetManager,
+          String modelFilename,
+          String labelFilename,
+          int inputSize,
+          int imageMean,
+          float imageStd,
+          String inputName,
+          String outputName) {
     TensorFlowImageClassifier c = new TensorFlowImageClassifier();
     c.inputName = inputName;
     c.outputName = outputName;
@@ -106,15 +105,7 @@ public class TensorFlowImageClassifier implements Classifier {
 
     // The shape of the output is [N, NUM_CLASSES], where N is the batch size.
     final Operation operation = c.inferenceInterface.graphOperation(outputName);
-    final Operation operation_num_detections=c.inferenceInterface.graphOperation("num_detections");
-    final Operation operation_detection_boxes=c.inferenceInterface.graphOperation("detection_boxes");
-    final Operation operation_detection_scores=c.inferenceInterface.graphOperation("detection_scores");
-    final Operation operation_detection_classes=c.inferenceInterface.graphOperation("detection_classes");
-
-    //org.tensorflow.Shape out_num1 = operation_clases.output(0).shape();
-   // org.tensorflow.Shape  out_num2=  operation_clases_2.output(0).shape();
-
-    final int numClasses = 1;//(int) operation.output(0).shape().size(1);
+    final int numClasses = (int) operation.output(0).shape().size(1);
     Log.i(TAG, "Read " + c.labels.size() + " labels, output layer size is " + numClasses);
 
     // Ideally, inputSize could have been retrieved from the shape of the input operation.  Alas,
@@ -167,20 +158,20 @@ public class TensorFlowImageClassifier implements Classifier {
 
     // Find the best classifications.
     PriorityQueue<Recognition> pq =
-        new PriorityQueue<Recognition>(
-            3,
-            new Comparator<Recognition>() {
-              @Override
-              public int compare(Recognition lhs, Recognition rhs) {
-                // Intentionally reversed to put high confidence at the head of the queue.
-                return Float.compare(rhs.getConfidence(), lhs.getConfidence());
-              }
-            });
+            new PriorityQueue<Recognition>(
+                    3,
+                    new Comparator<Recognition>() {
+                      @Override
+                      public int compare(Recognition lhs, Recognition rhs) {
+                        // Intentionally reversed to put high confidence at the head of the queue.
+                        return Float.compare(rhs.getConfidence(), lhs.getConfidence());
+                      }
+                    });
     for (int i = 0; i < outputs.length; ++i) {
       if (outputs[i] > THRESHOLD) {
         pq.add(
-            new Recognition(
-                "" + i, labels.size() > i ? labels.get(i) : "unknown", outputs[i], null));
+                new Recognition(
+                        "" + i, labels.size() > i ? labels.get(i) : "unknown", outputs[i], null));
       }
     }
     final ArrayList<Recognition> recognitions = new ArrayList<Recognition>();
