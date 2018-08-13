@@ -42,6 +42,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Size;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
@@ -129,7 +131,24 @@ public abstract class CameraActivity extends AppCompatActivity
       requestPermission();
     }
   }
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    // Inflate the menu; this adds items to the action bar if it is present.
+    getMenuInflater().inflate(R.menu.main_menu, menu);
+    return true;
+  }
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    // Handle item selection
+    switch (item.getItemId()) {
+      case R.id.add:
 
+        return true;
+
+      default:
+        return super.onOptionsItemSelected(item);
+    }
+  }
   @Override
   public void onBackPressed(){
 
