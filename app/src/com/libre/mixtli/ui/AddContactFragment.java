@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.libre.mixtli.ClassifierActivity;
 import com.libre.mixtli.R;
+import com.libre.mixtli.env.ContactAdapter;
 import com.libre.mixtli.pojos.Contact;
 import com.libre.mixtli.prefs.NetworkUtils;
 import com.libre.mixtli.prefs.Pref;
@@ -36,9 +37,10 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
 
+import java.util.ArrayList;
+
 public class AddContactFragment extends Fragment implements  View.OnClickListener  {
-    private Context contexto;
-    private SubmitButton btnRegister;
+    private SubmitButton btnAgregar;
     private Context context;
     private Pref prefs;
     private Dialog dialogError;
@@ -49,27 +51,35 @@ public class AddContactFragment extends Fragment implements  View.OnClickListene
     private ListView contactList;
     private String userGuid;
     private DatabaseReference mDatabase;
+    private EditText edtNombre;
+    private EditText edtCorreo ;
+    private EditText edtPhone;
+    private  ContactAdapter  contactAdapter;
+    ArrayList<Contact> arrayContact = new ArrayList<Contact>();
     @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.register_contact_activity, null);
-        contexto=this.getActivity().getBaseContext();
-        prefs=new Pref(contexto);
-
+        context=this.getActivity().getBaseContext();
+        prefs=new Pref(context);
         userGuid =prefs.loadData("REGISTER_USER_KEY");
-
         dialogError = new Dialog(context);
         dialogError.setContentView(R.layout.dialog_error);
         dialogButton = (SubmitButton)dialogError.findViewById(R.id.dialogButtonOK);
-        btnRegister = (SubmitButton)root.findViewById(R.id.btnAgregar);
+        btnAgregar = (SubmitButton)root.findViewById(R.id.btnAgregar);
         messageError = (TextView)dialogError .findViewById(R.id.txtMensaje);
         dialogButton.setOnClickListener(dialogListener);
         netStatus= NetworkUtils.getConnectivityStatus(context);
-        btnRegister.setOnClickListener(this);
-        btnRegister.setOnResultEndListener(finishListener);
+        btnAgregar.setOnClickListener(this);
+        btnAgregar.setOnResultEndListener(finishListener);
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(userGuid).addValueEventListener(addContectListener);
-
+        contactList=(ListView) root.findViewById(R.id.contactList);
+        edtNombre = (EditText) root.findViewById(R.id.edtNombre);
+        edtCorreo = (EditText) root.findViewById(R.id.edtCorreo);
+        edtPhone = (EditText) root.findViewById(R.id.edtPhone);
+        contactAdapter = new ContactAdapter(context, arrayContact);
+        contactList.setAdapter(contactAdapter);
         return root;
     }
 
@@ -100,17 +110,16 @@ public class AddContactFragment extends Fragment implements  View.OnClickListene
 
         switch (v.getId()) {
 
-            case R.id.btnRegistrar:
+            case R.id.btnAgregar:
 
                 if (netStatus != 0) {
-                    if(validateList()) {
-                        registerSuccess=true;
-                    }
+                    registerSuccess=true;
+                    btnAgregar.doResult(true);
                 }else
                 {
                     messageError.setText("Verifica tu conexion");
                     dialogError.show();
-                    btnRegister.doResult(false);
+                    btnAgregar.doResult(false);
                     registerSuccess=false;
 
                 }
@@ -136,7 +145,7 @@ public class AddContactFragment extends Fragment implements  View.OnClickListene
         @Override
         public void onClick(View v) {
             dialogError.dismiss();
-            btnRegister.reset();
+            btnAgregar.reset();
             dialogButton.reset();
         }
     };
@@ -149,60 +158,23 @@ public class AddContactFragment extends Fragment implements  View.OnClickListene
     SubmitButton.OnResultEndListener finishListener=new SubmitButton.OnResultEndListener() {
         @Override
         public void onResultEnd() {
-            LayoutInflater layoutInflaterAndroid = LayoutInflater.from(context);
-            View mView = layoutInflaterAndroid.inflate(R.layout.dialog_add_contact, null);
-            AlertDialog.Builder alertDialogBuilderUserInput = new AlertDialog.Builder(context);
-            alertDialogBuilderUserInput.setView(mView);
+            String name= edtNombre.getText().toString();
+            String mail= edtCorreo.getText().toString();
+            String phone= edtPhone.getText().toString();
+            Contact contactUser = new Contact(name, mail, phone);
+            contactAdapter.add(contactUser);
+            mDatabase.child("users").child(userGuid).setValue(contactUser,new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    if (databaseError != null) {
+                        setErrorMessage("Error creando contacto");
+                        btnAgregar.reset();
+                    } else {
+                        btnAgregar.reset();
 
-            final EditText edtNombre = (EditText) mView.findViewById(R.id.edtNombre);
-            final EditText edtCorreo = (EditText) mView.findViewById(R.id.edtCorreo);
-            final EditText edtPhone = (EditText) mView.findViewById(R.id.edtPhone);
-            alertDialogBuilderUserInput
-                    .setCancelable(false)
-                    .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialogBox, int id) {
-                            // ToDo get user input here
-                            String name= edtNombre.getText().toString();
-                            String mail= edtCorreo.getText().toString();
-                            String phone= edtPhone.getText().toString();
-                            Contact contactUser = new Contact(name, mail, phone);
-                            mDatabase.child("users").child(userGuid).setValue(contactUser,new DatabaseReference.CompletionListener() {
-                                @Override
-                                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
-                                    if (databaseError != null) {
-                                        setErrorMessage("Error creando contacto");
-
-                                    } else {
-
-
-
-                                    }
-                                }
-                            });
-                        }
-                    })
-
-                    .setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialogBox, int id) {
-                                    dialogBox.cancel();
-                                }
-                            });
-
-            AlertDialog alertDialogAndroid = alertDialogBuilderUserInput.create();
-            alertDialogAndroid.show();
-
-           /* if(registerSuccess) {
-
-                prefs.saveData("REGISTER_USER_KEY", userGuid);
-
-
-
-
-            }else{
-                setErrorMessage("Error descargando archivos extras");
-
-            }*/
+                    }
+                }
+            });
         }
     };
 
@@ -211,6 +183,16 @@ public class AddContactFragment extends Fragment implements  View.OnClickListene
         public void onDataChange(DataSnapshot dataSnapshot) {
 
             Contact contact = dataSnapshot.getValue(Contact.class);
+            contactAdapter.add(contact);
+            Intent intent = new Intent(getActivity(), ClassifierActivity.class);
+            String instanceActivity=getActivity().getClass().getName();
+            if (instanceActivity.equals("com.libre.mixtli.ClassifierActivity")) {
+                ((ClassifierActivity) getActivity()).onBackPressed();
+            }else{
+                ((RegisterActivity) getActivity()).finish();
+                startActivity(intent);
+            }
+
         }
 
         @Override

@@ -17,12 +17,10 @@
 package com.libre.mixtli;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -43,8 +41,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Size;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
@@ -60,7 +56,6 @@ import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
 import com.libre.mixtli.ui.AddContactFragment;
 import com.libre.mixtli.ui.MapMaskFragment;
-import com.libre.mixtli.ui.RegisterContactActivity;
 import com.unstoppable.submitbuttonview.SubmitButton;
 import java.nio.ByteBuffer;
 
@@ -143,11 +138,11 @@ public abstract class CameraActivity extends AppCompatActivity
   @Override
   public void onBackPressed(){
 
-    //super.onBackPressed();
+    fragmentTransaction = fragmentManager.beginTransaction();
     if(fragmentMap.isVisible()) {
-      Toast.makeText(getApplicationContext(), " Press Back again to Exit ", Toast.LENGTH_SHORT).show();
-      fragmentTransaction = fragmentManager.beginTransaction();
       fragmentTransaction.remove(fragmentMap).commit();
+    }else if(fragmentContact.isVisible()){
+      fragmentTransaction.remove(fragmentContact).commit();
     }else {
       setPrincipal();
     }
@@ -585,9 +580,6 @@ public abstract class CameraActivity extends AppCompatActivity
             .commit();
   }
   public void setAddContact(){
-    setDemoView();
-    gunOn.setVisibility(View.INVISIBLE);
-    gunOff.setVisibility(View.INVISIBLE);
     fragmentTransaction
             .replace(R.id.container_mask,fragmentContact)
             .commit();

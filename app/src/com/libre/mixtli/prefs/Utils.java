@@ -2,6 +2,10 @@ package com.libre.mixtli.prefs;
 
 import android.os.Environment;
 
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.imgproc.Imgproc;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -14,6 +18,7 @@ import java.io.Serializable;
 
 import static com.libre.mixtli.env.Constants.FACE_XML;
 import static com.libre.mixtli.env.Constants.pixquiExternalData;
+import static org.opencv.imgproc.Imgproc.getRotationMatrix2D;
 
 /**
  * Created by hugo on 8/04/18.
@@ -101,5 +106,13 @@ public class Utils {
         } catch (IOException e) {
             // handle exception
         }
+    }
+    public static Mat rotate(Mat src, double angle)
+    {
+        Mat dst=new Mat();
+        Point pt=new Point(src.cols()/2, src.rows()/2);
+        Mat r = getRotationMatrix2D(pt, angle, 1.0);
+        Imgproc.warpAffine(src, dst, r, new  org.opencv.core.Size(src.cols(), src.rows()));
+        return dst;
     }
 }

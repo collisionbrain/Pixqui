@@ -3,6 +3,9 @@ package com.libre.mixtli.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -67,7 +70,9 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
     private String userGuid;
     private  FirebaseStorage storage;
     final long ONE_MEGABYTE = 1024 * 1024;
-
+    private FragmentManager fragmentManager;
+    private FragmentTransaction fragmentTransaction;
+    final private Fragment fragmentContact=new AddContactFragment();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -262,11 +267,9 @@ public class RegisterActivity  extends Activity implements  View.OnClickListener
             if(registerSuccess) {
 
                 prefs.saveData("REGISTER_USER_KEY", userGuid);
-                Intent registerIntent = new Intent(RegisterActivity.this, RegisterContactActivity.class);
-                registerIntent.putExtra("REGISTER_USER_KEY",userGuid);
-                RegisterActivity.this.startActivity(registerIntent);
-                RegisterActivity.this.finish();
-
+                fragmentTransaction
+                        .replace(R.id.container_mask,fragmentContact)
+                        .commit();
             }else{
                 setErrorMessage("Error descargando archivos extras");
 

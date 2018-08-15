@@ -33,8 +33,8 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
         <ImageButton
             android:id="@+id/new_contact"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:src="@drawable/addcontact"
             android:layout_gravity="right"
             android:padding="20dp"
@@ -129,8 +129,8 @@
             >
         <ImageView
             android:id="@+id/gunOff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
             android:src="@drawable/icon_gun"
             />
             <ImageView

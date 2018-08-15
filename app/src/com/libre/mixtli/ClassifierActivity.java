@@ -1,5 +1,6 @@
 package com.libre.mixtli;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.Canvas;
@@ -7,13 +8,30 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.media.ImageReader.OnImageAvailableListener;
+import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.util.Size;
 import android.util.TypedValue;
+
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.libre.mixtli.core.PixquiCore;
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
 import com.libre.mixtli.prefs.Pref;
 
+import org.opencv.android.Utils;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
+import org.opencv.imgproc.Imgproc;
+
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
@@ -28,7 +46,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     private Bitmap croppedBitmap = null;
     private Bitmap cropCopyBitmap = null;
     private   CameraActivity cameraActivity;
-    private Pref prefs;
     private long lastProcessingTimeMs;
 
     // These are the settings for the original v1 Inception model. If you want to
@@ -68,11 +85,46 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     private Classifier classifier;
     private Matrix frameToCropTransform;
     private Matrix cropToFrameTransform;
-    private String user_key;
-
-
     private BorderedText borderedText;
+    private Pref prefs;
+    private Context context;
+    private CameraActivity activity ;
 
+    private FirebaseStorage firebaseStorage ;
+    private StorageReference storageRef ;
+    private StorageReference uploadeRef;
+    private String user_key;
+    private SimpleDateFormat simpleDateFormat;
+    private Calendar calendar ;
+    private Date now ;
+    private PixquiCore pixquiCore;
+    private Mat screenMat;
+    private  MatOfRect faces;
+    private String faceFile;
+    private File externalDir ;
+    private String cascadeFilePath;
+    private File mCascadeFile;
+    @Override
+    protected void onCreate(final Bundle savedInstanceState) {
+        LOGGER.d("onCreate " + this);
+        super.onCreate(null);
+        context=this;
+        prefs=new Pref(context);
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageRef = firebaseStorage.getReference();
+        user_key=prefs.loadData("REGISTER_USER_KEY");
+        simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        calendar = Calendar.getInstance();
+
+        faceFile = "/pdata/xml/haarcascade_frontalcatface.xml";
+        externalDir = Environment.getExternalStorageDirectory();
+        cascadeFilePath=externalDir.getAbsolutePath().toString().concat(faceFile);
+        mCascadeFile = new File(cascadeFilePath);
+
+        pixquiCore = new PixquiCore(mCascadeFile.getAbsolutePath(), 0);
+        screenMat=new Mat();
+        faces=new MatOfRect();
+    }
 
     @Override
     protected int getLayoutId() {
@@ -145,14 +197,30 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
                 new Runnable() {
                     @Override
                     public void run() {
+                        Utils.bitmapToMat(croppedBitmap,screenMat);
+                        Mat grayImage=new Mat();
+                        Imgproc.cvtColor(screenMat, grayImage, Imgproc.COLOR_BGR2GRAY);
+                        Mat dst= com.libre.mixtli.prefs.Utils.rotate( grayImage, 180);
+                        Bitmap fcroppedBitmap = Bitmap.createBitmap(croppedBitmap);
+                        Utils.matToBitmap(dst,fcroppedBitmap);
 
-                        final List<Classifier.Recognition> results = classifier.recognizeImage(croppedBitmap);
+                        Log.d("xxxxxxxxxxx", "BITMAP  "+rgbFrameBitmap.getHeight()+"x"+rgbFrameBitmap.getWidth());
+                        Log.d("xxxxxxxxxxx", "MAT  >"+screenMat.cols()+"x"+screenMat.rows());
 
-                        for (Classifier.Recognition res:results
-                             ) {
-                            if(res.getConfidence()>minimumConfidence){
-                                user_key=prefs.loadData("REGISTER_USER_KEY");
-                                cameraActivity.setGunAllert();
+                        pixquiCore.detect(dst, faces);
+                        List<Rect> list=faces.toList();
+                        Log.d("xxxxxxxxxxx", "FACES  >> "+list.size());
+                        screenMat.release();
+
+
+                        if(list.size()>0) {
+                            final List<Classifier.Recognition> results = classifier.recognizeImage(croppedBitmap);
+                            for (Classifier.Recognition res : results
+                                    ) {
+                                if (res.getConfidence() > minimumConfidence) {
+                                    user_key = prefs.loadData("REGISTER_USER_KEY");
+                                    cameraActivity.setGunAllert();
+                                }
                             }
                         }
                         cropCopyBitmap = Bitmap.createBitmap(croppedBitmap);
@@ -199,4 +267,5 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
             borderedText.drawLines(canvas, 10, canvas.getHeight() - 10, lines);
         }
     }
+
 }
