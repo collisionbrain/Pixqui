@@ -58,6 +58,7 @@ import android.widget.Toast;
 
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
+import com.libre.mixtli.ui.AddContactFragment;
 import com.libre.mixtli.ui.MapMaskFragment;
 import com.libre.mixtli.ui.RegisterContactActivity;
 import com.unstoppable.submitbuttonview.SubmitButton;
@@ -102,6 +103,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private boolean startDemo=false;
   final Animation animation = new AlphaAnimation((float) 0.5, 0);
   final private Fragment fragmentMap=new MapMaskFragment();
+  final private Fragment fragmentContact=new AddContactFragment();
   private ImageButton contactButton;
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
@@ -557,8 +559,7 @@ public abstract class CameraActivity extends AppCompatActivity
   View.OnClickListener contactListener=new View.OnClickListener() {
     @Override
     public void onClick(View v) {
-      Intent addContactIntent = new Intent(CameraActivity.this, RegisterContactActivity.class);
-      startActivityForResult(addContactIntent,100);
+      setAddContact();
     }
   };
 
@@ -581,6 +582,14 @@ public abstract class CameraActivity extends AppCompatActivity
     gunOff.setVisibility(View.INVISIBLE);
     fragmentTransaction
             .replace(R.id.container_mask,fragmentMap)
+            .commit();
+  }
+  public void setAddContact(){
+    setDemoView();
+    gunOn.setVisibility(View.INVISIBLE);
+    gunOff.setVisibility(View.INVISIBLE);
+    fragmentTransaction
+            .replace(R.id.container_mask,fragmentContact)
             .commit();
   }
   private void setDemoView(){
