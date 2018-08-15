@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import com.libre.mixtli.env.BorderedText;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
+import com.libre.mixtli.prefs.Pref;
 
 import java.util.List;
 import java.util.Vector;
@@ -27,7 +28,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     private Bitmap croppedBitmap = null;
     private Bitmap cropCopyBitmap = null;
     private   CameraActivity cameraActivity;
-
+    private Pref prefs;
     private long lastProcessingTimeMs;
 
     // These are the settings for the original v1 Inception model. If you want to
@@ -67,6 +68,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     private Classifier classifier;
     private Matrix frameToCropTransform;
     private Matrix cropToFrameTransform;
+    private String user_key;
 
 
     private BorderedText borderedText;
@@ -134,7 +136,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
         rgbFrameBitmap.setPixels(getRgbBytes(), 0, previewWidth, 0, 0, previewWidth, previewHeight);
         final Canvas canvas = new Canvas(croppedBitmap);
         canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
-
+        prefs=new Pref(this);
         // For examining the actual TF input.
         if (SAVE_PREVIEW_BITMAP) {
             ImageUtils.saveBitmap(croppedBitmap);
@@ -149,6 +151,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
                         for (Classifier.Recognition res:results
                              ) {
                             if(res.getConfidence()>minimumConfidence){
+                                user_key=prefs.loadData("REGISTER_USER_KEY");
                                 cameraActivity.setGunAllert();
                             }
                         }

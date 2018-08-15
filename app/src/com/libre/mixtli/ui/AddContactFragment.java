@@ -3,53 +3,41 @@ package com.libre.mixtli.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.text.TextUtils;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.CheckBox;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
-import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.libre.mixtli.ClassifierActivity;
-import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
 import com.libre.mixtli.pojos.Contact;
 import com.libre.mixtli.prefs.NetworkUtils;
 import com.libre.mixtli.prefs.Pref;
-import com.libre.mixtli.prefs.Utils;
 import com.unstoppable.submitbuttonview.SubmitButton;
 
-import static com.libre.mixtli.env.Constants.FACE_XML;
-import static com.libre.mixtli.env.Constants.URL;
+import org.osmdroid.api.IMapController;
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
+import org.osmdroid.util.GeoPoint;
+import org.osmdroid.views.MapView;
 
-/**
- * Created by hgallardo on 07/03/18.
- */
-
-public class RegisterContactActivity extends Activity implements  View.OnClickListener  {
+public class AddContactFragment extends Fragment implements  View.OnClickListener  {
+    private Context contexto;
     private SubmitButton btnRegister;
     private Context context;
     private Pref prefs;
@@ -61,19 +49,19 @@ public class RegisterContactActivity extends Activity implements  View.OnClickLi
     private ListView contactList;
     private String userGuid;
     private DatabaseReference mDatabase;
+    @SuppressWarnings("deprecation")
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.register_contact_activity);
-        context=this;
-        prefs=new Pref(this);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.register_contact_activity, null);
+        contexto=this.getActivity().getBaseContext();
+        prefs=new Pref(contexto);
 
         userGuid =prefs.loadData("REGISTER_USER_KEY");
 
         dialogError = new Dialog(context);
         dialogError.setContentView(R.layout.dialog_error);
         dialogButton = (SubmitButton)dialogError.findViewById(R.id.dialogButtonOK);
-        btnRegister = (SubmitButton) findViewById(R.id.btnAgregar);
+        btnRegister = (SubmitButton)root.findViewById(R.id.btnAgregar);
         messageError = (TextView)dialogError .findViewById(R.id.txtMensaje);
         dialogButton.setOnClickListener(dialogListener);
         netStatus= NetworkUtils.getConnectivityStatus(context);
@@ -82,19 +70,30 @@ public class RegisterContactActivity extends Activity implements  View.OnClickLi
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mDatabase.child("users").child(userGuid).addValueEventListener(addContectListener);
 
+        return root;
+    }
+
+    @SuppressWarnings("MissingPermission")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+
+
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onPause(){
 
+        super.onPause();
     }
 
+    @SuppressWarnings("MissingPermission")
     @Override
-    public void onStop() {
-        super.onStop();
-    }
+    public void onResume() {
+        super.onResume();
 
+    }
     @Override
     public void onClick(View v) {
 
@@ -106,8 +105,8 @@ public class RegisterContactActivity extends Activity implements  View.OnClickLi
                 if (netStatus != 0) {
                     if(validateList()) {
                         registerSuccess=true;
-                }
-            }else
+                    }
+                }else
                 {
                     messageError.setText("Verifica tu conexion");
                     dialogError.show();
@@ -134,11 +133,11 @@ public class RegisterContactActivity extends Activity implements  View.OnClickLi
 
 
     View.OnClickListener dialogListener=new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        dialogError.dismiss();
-        btnRegister.reset();
-        dialogButton.reset();
+        @Override
+        public void onClick(View v) {
+            dialogError.dismiss();
+            btnRegister.reset();
+            dialogButton.reset();
         }
     };
 
@@ -163,7 +162,7 @@ public class RegisterContactActivity extends Activity implements  View.OnClickLi
                     .setPositiveButton("Send", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialogBox, int id) {
                             // ToDo get user input here
-                           String name= edtNombre.getText().toString();
+                            String name= edtNombre.getText().toString();
                             String mail= edtCorreo.getText().toString();
                             String phone= edtPhone.getText().toString();
                             Contact contactUser = new Contact(name, mail, phone);
@@ -175,9 +174,7 @@ public class RegisterContactActivity extends Activity implements  View.OnClickLi
 
                                     } else {
 
-                                        Intent registerIntent = new Intent(RegisterContactActivity.this, ClassifierActivity.class);
-                                        RegisterContactActivity.this.startActivity(registerIntent);
-                                        RegisterContactActivity.this.finish();
+                                        
 
                                     }
                                 }

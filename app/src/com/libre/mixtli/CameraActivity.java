@@ -22,6 +22,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
@@ -50,6 +51,7 @@ import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -57,6 +59,7 @@ import android.widget.Toast;
 import com.libre.mixtli.env.ImageUtils;
 import com.libre.mixtli.env.Logger;
 import com.libre.mixtli.ui.MapMaskFragment;
+import com.libre.mixtli.ui.RegisterContactActivity;
 import com.unstoppable.submitbuttonview.SubmitButton;
 import java.nio.ByteBuffer;
 
@@ -99,6 +102,7 @@ public abstract class CameraActivity extends AppCompatActivity
   private boolean startDemo=false;
   final Animation animation = new AlphaAnimation((float) 0.5, 0);
   final private Fragment fragmentMap=new MapMaskFragment();
+  private ImageButton contactButton;
   @Override
   protected void onCreate(final Bundle savedInstanceState) {
     LOGGER.d("onCreate " + this);
@@ -109,8 +113,10 @@ public abstract class CameraActivity extends AppCompatActivity
     setContentView(R.layout.activity_camera);
     Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
     myToolbar.setTitle("");
+    contactButton=(ImageButton)myToolbar.findViewById(R.id.new_contact);
     setSupportActionBar(myToolbar);
 
+    contactButton.setOnClickListener(contactListener);
     btnDemo=(SubmitButton) findViewById(R.id.btnDemo);
     btnDemo.setOnClickListener(demoListener);
     btnInicio=(SubmitButton) findViewById(R.id.btnInicar);
@@ -131,24 +137,7 @@ public abstract class CameraActivity extends AppCompatActivity
       requestPermission();
     }
   }
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
-    // Inflate the menu; this adds items to the action bar if it is present.
-    getMenuInflater().inflate(R.menu.main_menu, menu);
-    return true;
-  }
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    // Handle item selection
-    switch (item.getItemId()) {
-      case R.id.add:
 
-        return true;
-
-      default:
-        return super.onOptionsItemSelected(item);
-    }
-  }
   @Override
   public void onBackPressed(){
 
@@ -564,6 +553,15 @@ public abstract class CameraActivity extends AppCompatActivity
 
 
   }
+
+  View.OnClickListener contactListener=new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      Intent addContactIntent = new Intent(CameraActivity.this, RegisterContactActivity.class);
+      startActivityForResult(addContactIntent,100);
+    }
+  };
+
   View.OnClickListener demoListener=new View.OnClickListener() {
     @Override
     public void onClick(View v) {

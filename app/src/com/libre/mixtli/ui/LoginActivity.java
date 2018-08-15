@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.libre.mixtli.ClassifierActivity;
 import com.libre.mixtli.DetectorActivity;
 import com.libre.mixtli.R;
 import com.libre.mixtli.prefs.NetworkUtils;
@@ -173,7 +174,7 @@ public class LoginActivity  extends Activity implements  View.OnClickListener  {
         public void onResultEnd() {
             if(loginSuccess) {
                 prefs.saveData("REGISTER_USER_KEY", userGuid);
-                Intent registerIntent = new Intent(LoginActivity.this, DetectorActivity.class);
+                Intent registerIntent = new Intent(LoginActivity.this, ClassifierActivity.class);
                 LoginActivity.this.startActivity(registerIntent);
                 LoginActivity.this.finish();
                 } else {
