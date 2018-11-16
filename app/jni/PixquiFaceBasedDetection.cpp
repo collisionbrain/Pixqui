@@ -8,10 +8,10 @@
 #include "PixquiFaceBasedDetection.h"
 #include <opencv2/core.hpp>
 #include <opencv2/objdetect.hpp>
+#include <opencv2/dnn.hpp>
 #include <string>
 #include <vector>
 #include <android/log.h>
-
 #define LOG_TAG "Face Detection"
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
 using namespace std;
@@ -70,10 +70,13 @@ struct DetectorAgregator
 
 
 JNIEXPORT jlong JNICALL Java_com_libre_mixtli_core_PixquiCore_nativeCreateObject
-(JNIEnv * jenv, jclass, jstring jFileName, jint faceSize)
+(JNIEnv * jenv, jclass, jstring jFileNameFaces, jstring jFileNameModel, jstring jFileNameLabel, jint faceSize)
 {
     LOGD("Java_com_libre_mixtli_core_PixquiCore_nativeCreateObject enter");
-    const char* jnamestr = jenv->GetStringUTFChars(jFileName, NULL);
+    const char* jnamestr = jenv->GetStringUTFChars(jFileNameFaces, NULL);
+    const char* jmodeltr = jenv->GetStringUTFChars(jFileNameModel, NULL);
+    const char* jlabeltr = jenv->GetStringUTFChars(jFileNameLabel, NULL);
+
     string stdFileName(jnamestr);
     jlong result = 0;
 
@@ -85,6 +88,7 @@ JNIEXPORT jlong JNICALL Java_com_libre_mixtli_core_PixquiCore_nativeCreateObject
             makePtr<CascadeClassifier>(stdFileName));
         cv::Ptr<CascadeDetectorAdapter> trackingDetector = makePtr<CascadeDetectorAdapter>(
             makePtr<CascadeClassifier>(stdFileName));
+
         result = (jlong)new DetectorAgregator(mainDetector, trackingDetector);
         if (faceSize > 0)
         {

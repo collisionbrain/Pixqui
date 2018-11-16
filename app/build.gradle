@@ -93,7 +93,6 @@ dependencies {
     compile 'com.google.firebase:firebase-core:11.8.0'
     compile 'com.google.firebase:firebase-auth:11.8.0'
     compile 'com.google.firebase:firebase-storage:11.8.0'
-    compile 'com.google.firebase:firebase-database:11.8.0'
 
     compile project(':opencv')
     compile 'com.unstoppable:submitbutton:1.1.3'

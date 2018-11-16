@@ -11,9 +11,10 @@
 #include <opencv2/objdetect.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
-#include <tensorflow/c/c_api.h>
+#include <opencv2/dnn.hpp>
+#include <fstream>
 #include <iostream>
-#include <string>
+#include <cstdlib>
 #include <algorithm>
 #include <android/log.h>
 #include <android/bitmap.h>
@@ -30,11 +31,56 @@
 #define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
 using namespace std;
 using namespace cv;
+using namespace cv::dnn;
 
-<<<<<<< HEAD
+jboolean detectObject(Mat& img,string& fileModel,string& fileLabels)
+{
 
-=======
-vector<Rect> detect ( Mat& img,string& fileCascade)
+    String input="Mul";
+    String output="final_result";
+
+    dnn::Net net=dnn::readNetFromTensorflow(fileModel);
+    if(net.empty())
+    {
+     LOGD("Error loading model ");
+    }
+
+    Mat inputBlob=blobFromImage(img,1.0f,Size(299,299),Scalar(),true,false);
+    net.setInput(inputBlob,input);
+    return false;
+}
+
+void getMaxClass(const Mat &probBlob,int *classId,double *classProb)
+{
+    Mat probMat =probBlob.reshape(1,1);
+    Point classNumber;
+    minMaxLoc(probMat,NULL,classProb,NULL,&classNumber);
+    *classId=classNumber.x;
+}
+
+std::vector<String> readClassNames(const char *fileName){
+    std::vector<String> classNames;
+    std::ifstream fp(fileName);
+    if(!fp.is_open())
+    {
+    LOGD("Error loading labels ");
+
+    }
+    std::string name;
+    while(!fp.eof())
+    {
+        std::getline(fp,name);
+        if(name.length())
+        {
+            classNames.push_back(name);
+        }
+    }
+    fp.close();
+    return classNames;
+
+}
+
+vector<Rect> detectPerson( Mat& img,string& fileCascade)
  {
      double t = 0;
      double scale;
@@ -92,15 +138,11 @@ vector<Rect> detect ( Mat& img,string& fileCascade)
     return faces;
 
  }
->>>>>>> 0540b9abfea5c4ba5205bc5eb94db0a703cb35a1
-
 JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
         (JNIEnv* jenv, jclass,jlong imageMat, jlong squareMat,jstring jFileName)
 {
     LOGD("STARTING PROCESS ");
-<<<<<<< HEAD
-     
-=======
+
     Mat& imgMat=*((Mat*)imageMat);
     LOGD("SET INPUT MATERIAL  ");
     const char* jnamestr = jenv->GetStringUTFChars(jFileName, NULL);
@@ -113,7 +155,6 @@ JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detectFace
      LOGD("*************");
     LOGD("FAOUDED FACES FINISH  ");
    //*((Mat*)squareMat) = Mat(founded, true);
->>>>>>> 0540b9abfea5c4ba5205bc5eb94db0a703cb35a1
 
 }
 
