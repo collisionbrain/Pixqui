@@ -1,6 +1,5 @@
-/home/hugo/Pixqui/app/obj/local/armeabi-v7a/objs/pixqui_face_detection/PixquiFaceBasedDetection.o: \
-  /home/hugo/Pixqui/app/jni/PixquiFaceBasedDetection.cpp \
-  /home/hugo/Pixqui/app/jni/PixquiFaceBasedDetection.h \
+./obj/local/armeabi-v7a/objs/pixqui_face_detection/PixquiFaceBasedDetection.o: \
+  jni/PixquiFaceBasedDetection.cpp jni/PixquiFaceBasedDetection.h \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/core.hpp \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/core/cvdef.h \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/core/hal/interface.h \
@@ -45,9 +44,15 @@
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/objdetect.hpp \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/objdetect/detection_based_tracker.hpp \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/objdetect/objdetect_c.h \
-  /home/hugo/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/deque
+  /home/hugo/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/deque \
+  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn.hpp \
+  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/dnn.hpp \
+  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/dict.hpp \
+  /home/hugo/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/map \
+  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/layer.hpp \
+  /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/dnn.inl.hpp
 
-/home/hugo/Pixqui/app/jni/PixquiFaceBasedDetection.h:
+jni/PixquiFaceBasedDetection.h:
 
 /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/core.hpp:
 
@@ -138,3 +143,15 @@
 /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/objdetect/objdetect_c.h:
 
 /home/hugo/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/deque:
+
+/home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn.hpp:
+
+/home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/dnn.hpp:
+
+/home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/dict.hpp:
+
+/home/hugo/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/map:
+
+/home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/layer.hpp:
+
+/home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/dnn/dnn.inl.hpp:

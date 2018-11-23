@@ -33,22 +33,6 @@ using namespace std;
 using namespace cv;
 using namespace cv::dnn;
 
-jboolean detectObject(Mat& img,string& fileModel,string& fileLabels)
-{
-
-    String input="Mul";
-    String output="final_result";
-
-    dnn::Net net=dnn::readNetFromTensorflow(fileModel);
-    if(net.empty())
-    {
-     LOGD("Error loading model ");
-    }
-
-    Mat inputBlob=blobFromImage(img,1.0f,Size(299,299),Scalar(),true,false);
-    net.setInput(inputBlob,input);
-    return false;
-}
 
 void getMaxClass(const Mat &probBlob,int *classId,double *classProb)
 {
@@ -79,6 +63,32 @@ std::vector<String> readClassNames(const char *fileName){
     return classNames;
 
 }
+
+jboolean detectObject(Mat& img,string& fileModel,string& fileLabels)
+{
+
+    String input="Mul";
+    String output="final_result";
+
+    dnn::Net net=dnn::readNetFromTensorflow(fileModel);
+    if(net.empty())
+    {
+     LOGD("Error loading model ");
+    }
+
+    Mat inputBlob=blobFromImage(img,1.0f,Size(299,299),Scalar(),true,false);
+    net.setInput(inputBlob,input);
+    Mat result = net.forward(output);
+    std::vector<String> classNames = readClassNames(fileLabels.c_str());
+    int classId;
+    double classProb;
+    getMaxClass(result, &classId, &classProb);//find the best class
+    std::cout << "Best class: #" << classId << " '" << classNames.at(classId) << "'" << std::endl;
+    std::cout << "Probability: " << classProb * 100 << "%  daisy" <<  result.at<float>(0) << ",dandelion" << result.at<float>(1) << ",roses" << result.at<float>(2) << ",sunflower" << result.at<float>(3) << ",tulip" << result.at<float>(4) << std::endl;
+    return false;
+}
+
+
 
 vector<Rect> detectPerson( Mat& img,string& fileCascade)
  {

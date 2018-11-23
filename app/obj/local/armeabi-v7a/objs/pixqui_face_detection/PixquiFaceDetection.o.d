@@ -1,6 +1,5 @@
-/home/hugo/Pixqui/app/obj/local/armeabi-v7a/objs/pixqui_face_detection/PixquiFaceDetection.o: \
-  /home/hugo/Pixqui/app/jni/PixquiFaceDetection.cpp \
-  /home/hugo/Pixqui/app/jni/PixquiFaceDetection.h \
+./obj/local/armeabi-v7a/objs/pixqui_face_detection/PixquiFaceDetection.o: \
+  jni/PixquiFaceDetection.cpp jni/PixquiFaceDetection.h \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/objdetect.hpp \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/core.hpp \
   /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/core/cvdef.h \
@@ -64,7 +63,7 @@
   /home/hugo/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/fstream \
   /home/hugo/Android/Sdk/ndk-bundle/sources/cxx-stl/gnu-libstdc++/4.9/include/iostream
 
-/home/hugo/Pixqui/app/jni/PixquiFaceDetection.h:
+jni/PixquiFaceDetection.h:
 
 /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/include/opencv2/objdetect.hpp:
 

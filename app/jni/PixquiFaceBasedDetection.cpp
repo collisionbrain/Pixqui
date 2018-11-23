@@ -54,14 +54,17 @@ struct DetectorAgregator
 {
     cv::Ptr<CascadeDetectorAdapter> mainDetector;
     cv::Ptr<CascadeDetectorAdapter> trackingDetector;
+    dnn::Net netDetector;
 
     cv::Ptr<DetectionBasedTracker> tracker;
-    DetectorAgregator(cv::Ptr<CascadeDetectorAdapter>& _mainDetector, cv::Ptr<CascadeDetectorAdapter>& _trackingDetector):
+    DetectorAgregator(cv::Ptr<CascadeDetectorAdapter>& _mainDetector, cv::Ptr<CascadeDetectorAdapter>& _trackingDetector,dnn::Net _netDetector):
             mainDetector(_mainDetector),
-            trackingDetector(_trackingDetector)
+            trackingDetector(_trackingDetector),
+            netDetector(_netDetector)
     {
         CV_Assert(_mainDetector);
         CV_Assert(_trackingDetector);
+        CV_Assert(_netDetector);
 
         DetectionBasedTracker::Parameters DetectorParams;
         tracker = makePtr<DetectionBasedTracker>(mainDetector, trackingDetector, DetectorParams);
@@ -78,6 +81,7 @@ JNIEXPORT jlong JNICALL Java_com_libre_mixtli_core_PixquiCore_nativeCreateObject
     const char* jlabeltr = jenv->GetStringUTFChars(jFileNameLabel, NULL);
 
     string stdFileName(jnamestr);
+    string stdFileNameModel(jmodeltr);
     jlong result = 0;
 
     LOGD("Java_org_opencv_samples_facedetect_DetectionBasedTracker_nativeCreateObject");
@@ -88,8 +92,9 @@ JNIEXPORT jlong JNICALL Java_com_libre_mixtli_core_PixquiCore_nativeCreateObject
             makePtr<CascadeClassifier>(stdFileName));
         cv::Ptr<CascadeDetectorAdapter> trackingDetector = makePtr<CascadeDetectorAdapter>(
             makePtr<CascadeClassifier>(stdFileName));
+        dnn::Net netDetector=dnn::readNetFromTensorflow(stdFileNameModel);
 
-        result = (jlong)new DetectorAgregator(mainDetector, trackingDetector);
+        result = (jlong)new DetectorAgregator(mainDetector, trackingDetector,net);
         if (faceSize > 0)
         {
             mainDetector->setMinObjectSize(Size(faceSize, faceSize));

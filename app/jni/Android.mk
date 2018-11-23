@@ -3,8 +3,8 @@ include $(CLEAR_VARS)
 OPENCV_INSTALL_MODULES:=on
 include /home/hugo/librerias/OpenCV-android-sdk/sdk/native/jni/OpenCV.mk
 
-LOCAL_MODULE     := pixqui_face_detection
-LOCAL_SRC_FILES  := PixquiFaceDetection.cpp
+LOCAL_MODULE     := pixqui_based_face_detection
+LOCAL_SRC_FILES  := PixquiFaceBasedDetection.cpp
 LOCAL_C_INCLUDES += $(LOCAL_PATH)
 
 LOCAL_LDLIBS     += -llog -ldl
