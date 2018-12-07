@@ -64,7 +64,7 @@ struct DetectorAgregator
     {
         CV_Assert(_mainDetector);
         CV_Assert(_trackingDetector);
-        CV_Assert(_netDetector);
+        //CV_Assert(_netDetector);
 
         DetectionBasedTracker::Parameters DetectorParams;
         tracker = makePtr<DetectionBasedTracker>(mainDetector, trackingDetector, DetectorParams);
@@ -94,7 +94,7 @@ JNIEXPORT jlong JNICALL Java_com_libre_mixtli_core_PixquiCore_nativeCreateObject
             makePtr<CascadeClassifier>(stdFileName));
         dnn::Net netDetector=dnn::readNetFromTensorflow(stdFileNameModel);
 
-        result = (jlong)new DetectorAgregator(mainDetector, trackingDetector,net);
+        result = (jlong)new DetectorAgregator(mainDetector, trackingDetector,netDetector);
         if (faceSize > 0)
         {
             mainDetector->setMinObjectSize(Size(faceSize, faceSize));
