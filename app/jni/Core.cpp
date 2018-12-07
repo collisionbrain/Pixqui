@@ -36,22 +36,22 @@ class Core
 
 private:
 
-
-     dnn::Net netDetector;
-     std::string stdFileNameLabel;
-
 public:
 
         Core();
         virtual ~Core();
-        void create( const char* jmodeltr , const char* jlabeltr)
+        dnn::Net netDetector;
+        string stdFileNameModel;
+        string stdFileNameLabel;
+
+        dnn::Net create( const char* jmodeltr , const char* jlabeltr)
         {
 
 
-             string stdFileNameModel(jmodeltr);
-             stdFileNameLabel(jlabeltr);
+             stdFileNameModel=jmodeltr;
+             stdFileNameLabel=jlabeltr;
              netDetector=dnn::readNetFromTensorflow(stdFileNameModel);
-
+             return netDetector;
 
         }
         void destroy();
