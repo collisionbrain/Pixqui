@@ -35,27 +35,70 @@ class Core
 {
 
 private:
-
-public:
-
-        Core();
-        virtual ~Core();
         dnn::Net netDetector;
         string stdFileNameModel;
         string stdFileNameLabel;
 
-        dnn::Net create( const char* jmodeltr , const char* jlabeltr)
-        {
+public:
+
+       cv::dnn::Net create( const char* jmodeltr , const char* jlabeltr);
+       void destroy();
+       bool detect(const cv::Mat &img);
+
+};
+
+cv::dnn::Net Core::create( const char* jmodeltr , const char* jlabeltr)
+{
 
 
-             stdFileNameModel=jmodeltr;
-             stdFileNameLabel=jlabeltr;
-             netDetector=dnn::readNetFromTensorflow(stdFileNameModel);
-             return netDetector;
+      stdFileNameModel=jmodeltr;
+      stdFileNameLabel=jlabeltr;
+      netDetector=dnn::readNetFromTensorflow(stdFileNameModel);
+      return netDetector;
+}
 
-        }
-        void destroy();
-        void getMaxClass(const Mat &probBlob,int *classId,double *classProb)
+
+struct Detector
+{
+     string model;
+     string label;
+     cv::dnn::Net detector;
+     Core core;
+    Detector(string _model,string _label):model(_model),label(_label)
+    {
+
+    detector=core.create(model.c_str(),label.c_str());
+
+    }
+
+
+};
+
+
+
+
+/*
+
+        bool detectObject(const cv::Mat &img)
+         {
+          if(netDetector.empty())
+             {
+              LOGD("Error loading model ");
+             }
+
+             Mat inputBlob=blobFromImage(img,1.0f,Size(299,299),Scalar(),true,false);
+             netDetector.setInput(inputBlob,input);
+             Mat result = netDetector.forward(output);
+             std::vector<String> classNames = readClassNames(stdFileNameLabel.c_str());
+             int classId;
+             double classProb;
+             getMaxClass(result, &classId, &classProb);//find the best class
+             std::cout << "Best class: #" << classId << " '" << classNames.at(classId) << "'" << std::endl;
+             std::cout << "Probability: " << classProb * 100 << "%  daisy" <<  result.at<float>(0) << ",dandelion" << result.at<float>(1) << ",roses" << result.at<float>(2) << ",sunflower" << result.at<float>(3) << ",tulip" << result.at<float>(4) << std::endl;
+             return false;
+         }
+
+void getMaxClass(const Mat &probBlob,int *classId,double *classProb)
         {
             Mat probMat =probBlob.reshape(1,1);
             Point classNumber;
@@ -84,50 +127,59 @@ public:
             fp.close();
             return classNames;
 
+        }*/
+
+void  getMaxClass(const Mat &probBlob,int *classId,double *classProb)
+        {
+            Mat probMat =probBlob.reshape(1,1);
+            Point classNumber;
+            minMaxLoc(probMat,NULL,classProb,NULL,&classNumber);
+            *classId=classNumber.x;
         }
-        bool detectObject(const cv::Mat &img)
-         {
-          if(netDetector.empty())
-             {
-              LOGD("Error loading model ");
-             }
+std::vector<String> readClassNames(const char *fileName)
+        {
+            std::vector<String> classNames;
+            std::ifstream fp(fileName);
+            if(!fp.is_open())
+            {
+            LOGD("Error loading labels ");
 
-             Mat inputBlob=blobFromImage(img,1.0f,Size(299,299),Scalar(),true,false);
-             netDetector.setInput(inputBlob,input);
-             Mat result = netDetector.forward(output);
-             std::vector<String> classNames = readClassNames(stdFileNameLabel.c_str());
-             int classId;
-             double classProb;
-             getMaxClass(result, &classId, &classProb);//find the best class
-             std::cout << "Best class: #" << classId << " '" << classNames.at(classId) << "'" << std::endl;
-             std::cout << "Probability: " << classProb * 100 << "%  daisy" <<  result.at<float>(0) << ",dandelion" << result.at<float>(1) << ",roses" << result.at<float>(2) << ",sunflower" << result.at<float>(3) << ",tulip" << result.at<float>(4) << std::endl;
-             return false;
-         }
+            }
+            std::string name;
+            while(!fp.eof())
+            {
+                std::getline(fp,name);
+                if(name.length())
+                {
+                    classNames.push_back(name);
+                }
+            }
+            fp.close();
+            return classNames;
 
+        }
 
-
-
-
-
-
-};
-
-
-
-JNIEXPORT jlong JNICALL Java_com_libre_mixtli_core_PixquiCore_createObject
+JNIEXPORT jlong JNICALL Java_com_libre_mixtli_core_PixquiCore_create
 (JNIEnv * jenv, jclass, jstring jFileNameModel, jstring jFileNameLabel)
 {
     const char* jmodeltr = jenv->GetStringUTFChars(jFileNameModel, NULL);
     const char* jlabeltr = jenv->GetStringUTFChars(jFileNameLabel, NULL);
-    jlong result = 0;
+    return (jlong)new Detector(jmodeltr,jlabeltr);
 
-    return result;
+
 }
 
+
 JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detect
-(JNIEnv * jenv, jclass, jlong thiz, jlong imageGray, jlong faces)
+(JNIEnv * jenv, jclass, jlong thiz, jlong image, jboolean detected)
 {
 
+    int classId;
+    double classProb;
+    Mat inputBlob=blobFromImage(*((Mat*)image),1.0f,Size(299,299),Scalar(),true,false);
+    ((Detector*)thiz)->detector.setInput(inputBlob,input);
+    Mat result =  ((Detector*)thiz)->detector.forward(output);
+    getMaxClass(result, &classId, &classProb);
 }
 
 

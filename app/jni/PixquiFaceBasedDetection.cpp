@@ -57,10 +57,12 @@ struct DetectorAgregator
     dnn::Net netDetector;
 
     cv::Ptr<DetectionBasedTracker> tracker;
-    DetectorAgregator(cv::Ptr<CascadeDetectorAdapter>& _mainDetector, cv::Ptr<CascadeDetectorAdapter>& _trackingDetector,dnn::Net _netDetector):
-            mainDetector(_mainDetector),
-            trackingDetector(_trackingDetector),
-            netDetector(_netDetector)
+
+    DetectorAgregator(
+    cv::Ptr<CascadeDetectorAdapter>& _mainDetector,
+    cv::Ptr<CascadeDetectorAdapter>& _trackingDetector,
+    dnn::Net _netDetector):
+    mainDetector(_mainDetector),trackingDetector(_trackingDetector),netDetector(_netDetector)
     {
         CV_Assert(_mainDetector);
         CV_Assert(_trackingDetector);
