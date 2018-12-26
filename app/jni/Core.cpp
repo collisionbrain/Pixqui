@@ -1,4 +1,3 @@
-//
 // Created by hugo gallardo on 12/4/18.
 //
 
@@ -22,7 +21,8 @@
 #include <android/asset_manager_jni.h>
 #include <android/log.h>
 #define LOG_TAG "Pixqui Core"
-#define LOGD(...) ((void)__android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__))
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG, LOG_TAG, __VA_ARGS__)
+
 using namespace std;
 using namespace cv;
 using namespace cv::dnn;
@@ -40,10 +40,8 @@ private:
         string stdFileNameLabel;
 
 public:
-
        cv::dnn::Net create( const char* jmodeltr , const char* jlabeltr);
-       void destroy();
-       bool detect(const cv::Mat &img);
+
 
 };
 
@@ -57,77 +55,22 @@ cv::dnn::Net Core::create( const char* jmodeltr , const char* jlabeltr)
       return netDetector;
 }
 
-
 struct Detector
 {
      string model;
      string label;
      cv::dnn::Net detector;
      Core core;
-    Detector(string _model,string _label):model(_model),label(_label)
-    {
+     Detector(string _model,string _label):model(_model),label(_label)
+     {
 
-    detector=core.create(model.c_str(),label.c_str());
+         detector=core.create(model.c_str(),label.c_str());
 
-    }
+     }
 
 
 };
 
-
-
-
-/*
-
-        bool detectObject(const cv::Mat &img)
-         {
-          if(netDetector.empty())
-             {
-              LOGD("Error loading model ");
-             }
-
-             Mat inputBlob=blobFromImage(img,1.0f,Size(299,299),Scalar(),true,false);
-             netDetector.setInput(inputBlob,input);
-             Mat result = netDetector.forward(output);
-             std::vector<String> classNames = readClassNames(stdFileNameLabel.c_str());
-             int classId;
-             double classProb;
-             getMaxClass(result, &classId, &classProb);//find the best class
-             std::cout << "Best class: #" << classId << " '" << classNames.at(classId) << "'" << std::endl;
-             std::cout << "Probability: " << classProb * 100 << "%  daisy" <<  result.at<float>(0) << ",dandelion" << result.at<float>(1) << ",roses" << result.at<float>(2) << ",sunflower" << result.at<float>(3) << ",tulip" << result.at<float>(4) << std::endl;
-             return false;
-         }
-
-void getMaxClass(const Mat &probBlob,int *classId,double *classProb)
-        {
-            Mat probMat =probBlob.reshape(1,1);
-            Point classNumber;
-            minMaxLoc(probMat,NULL,classProb,NULL,&classNumber);
-            *classId=classNumber.x;
-        }
-
-        std::vector<String> readClassNames(const char *fileName)
-        {
-            std::vector<String> classNames;
-            std::ifstream fp(fileName);
-            if(!fp.is_open())
-            {
-            LOGD("Error loading labels ");
-
-            }
-            std::string name;
-            while(!fp.eof())
-            {
-                std::getline(fp,name);
-                if(name.length())
-                {
-                    classNames.push_back(name);
-                }
-            }
-            fp.close();
-            return classNames;
-
-        }*/
 
 void  getMaxClass(const Mat &probBlob,int *classId,double *classProb)
         {
@@ -180,6 +123,23 @@ JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_detect
     ((Detector*)thiz)->detector.setInput(inputBlob,input);
     Mat result =  ((Detector*)thiz)->detector.forward(output);
     getMaxClass(result, &classId, &classProb);
+    double prob=classProb * 100;
+
+    LOGD("Probabilidad de deteccion: %f",prob);
+    LOGD("Tipo de Objeto: %d",classId);
+
+    if(prob >= 90)
+     {
+     detected=true;
+     }else{
+     detected=false;
+     }
 }
 
+JNIEXPORT void JNICALL Java_com_libre_mixtli_core_PixquiCore_destroy
+(JNIEnv * jenv, jclass, jlong thiz)
+{
 
+  delete (Detector*)thiz;
+
+}
